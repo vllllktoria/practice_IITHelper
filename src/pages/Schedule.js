@@ -1,13 +1,11 @@
 import React from "react"
 
-class Schedule extends React.Component{
-    render() {
+function Schedule(){ 
         return( 
             <div>
-
+                <h1>Расписание</h1>
             </div>
         )
     }
-}
 
 export default Schedule

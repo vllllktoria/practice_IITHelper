@@ -1,52 +1,39 @@
-.main{
-    background-color: #4F73EF;
-    width: 100%;
-    position: fixed; 
-    top: 0;
-    left: 0;
-    text-align: left;
-}
+* {
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --color-bg: #4F73EF;
+    --color-active: #ffffff;
+  }
+  
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
+  header {
+    background-color: var(--color-bg);
+    padding: 20px;
+    text-align: center;
+    
+  }
+  header > a {
+    color: white;
+    text-decoration: none;
+    padding: 20px;
+  }
 
-.body{
-    color: #E6E6E6
-}
-
-.navbar{
- 
-	display:inline-block;
-}
-
-
-.navbar li{
-
-list-style: none;
-display:inline-block;
-
-margin:auto;
-}
-
-.navbar li a{
-text-decoration: none;
-color:rgb(255, 255, 255);
-font-size: 16px;
-font-family: Gill Sans, sans-serif;
-padding:8px 20px;
-}
-
-.navbar li a:hover{
-color:rgb(255, 255, 255);   
-}
-
-.navbar li a:active{
-background-color: #355BDE;
-}   
-
-
-.right{
-    background-color: #4F73EF;
-    position: fixed; 
-    top: 0;
-    right: 3%;
-    text-align: right;
-}
+  header > a:hover {
+    background-color: #355BDE;
+    padding:20px 20px
+  }
+  
+  .active {
+    color: var(--color-active);
+    cursor: default;
+  }

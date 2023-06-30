@@ -1,12 +1,10 @@
 import React from "react"
 
-class Students extends React.Component{
-    render() {
+function Students(){
         return (
         <div>
-
+            <h1>Студенты</h1>
         </div>)
     }
-}
 
 export default Students

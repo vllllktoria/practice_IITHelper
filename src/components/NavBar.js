@@ -1,25 +1,16 @@
-import React from 'react';
-import {  Link } from "react-router-dom";
+import React from 'react'
+import { CustomLink } from './CustomLink'
 
-class NavBar extends React.Component{
-    render() {
+function NavBar (){
         return (
-            <header className ="header">
-                <div className = "main">
-                    <ul className ="navbar">
-			            <li><Link to="/events">События</Link></li>
-                        <li><Link to="/schedule">Расписание</Link></li>
-                        <li><Link to="/students">Студенты</Link></li>
-		            </ul>
-                </div>
-		        <div className = "right">
-                    <ul className ="navbar">
-                        <li><Link to="/auth">Выход</Link></li>
-		            </ul>
-                </div>   
+            <>
+            <header>
+                <CustomLink to="/events">События</CustomLink>
+                <CustomLink to="/schedule">Расписание</CustomLink>
+                <CustomLink to="/students">Студенты</CustomLink>
+                <CustomLink to="/auth">Выход</CustomLink>
             </header>
+            </>
         )
     }
-}
-    
 export default NavBar
