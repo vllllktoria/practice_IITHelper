@@ -1,27 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import Users from "../components/Users";
 
 
-class Students extends React.Component{
-    render(){
+function Students() {
+
+    const [users, setUsers] = useState([
+        {
+            id: 1,
+            firstname: "ААА",
+            lastname: "ООО",
+            group: "ПрИ-301"
+        },
+        {
+            id: 2,
+            firstname: "ИИИ",
+            lastname: "ЕЕЕ",
+            group: "ПрИ-302"
+        }
+    ]);
+
+    let handleEdit = function(user) {
+        let usersCopy = users
+        usersCopy[user.id] = user
+        console.log(users)
+        setUsers(usersCopy)
+        // setUsers(users[e.target.value.id].firstname = e.target.value.fi)
+    }
             return (
             <div>
                 <h1>Заявки</h1>
                 <main>
-                <Users />
+                <Users users={users} handleEdit={handleEdit}/>
                 </main> 
             </div>)
-            
-        }
-        
-        editUser(el){
-            let allUsers = this.state.users
-            allUsers[el.id - 1] = el
-    
-            this.setState({users: []}, () => {
-                this.setState({users: [...allUsers]})
-            })
-        }
     }
     
 export default Students
