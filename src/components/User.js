@@ -9,10 +9,22 @@ function User(props){
     const [lastName, setLastName] = useState(props.user.lastname);
     const [group, setGroup] = useState(props.user.group);
 
+    const [unchecked, setCheck] = useState(false)
+    const checkHandleClick = () => {
+        setCheck(!unchecked);
+      };
+
+    const [notReject, setReject] = useState(false)
+    const rejectHandleClick = () => {
+        setReject(!notReject)
+      };
+
+    
+
     return( 
         <div className="user">
-            <FontAwesomeIcon icon={faClose} className="rejectBtn"/>
-            <FontAwesomeIcon icon={faCheck} className="checkBtn" />
+            <button className="rejectBtn" onClick={rejectHandleClick}>{ notReject ? "Отклонено" : "Отклонить"}</button>
+            <button className="checkBtn" onClick={checkHandleClick}>{ unchecked ? "Принято" : "Принять"}</button>
             <FontAwesomeIcon icon={faPenToSquare} onClick={() => {
                 setEdit(!edit);
             }} className="editBtn"/>

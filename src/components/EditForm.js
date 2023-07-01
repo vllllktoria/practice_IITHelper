@@ -23,13 +23,15 @@ function EditForm(props){
         props.setFirstName(firstName)
         props.setGroup(group)
         props.handleEdit(userCopy)
-    }
+    }   
+
     return(
         <form className="editForm">
             <input placeholder="Фамилия" onChange={handleLName} />
             <input placeholder="Имя" onChange={handlefName}/>
             <input placeholder="Группа" onChange={handleGroup}/>
             <button type="button" className="saveEdit" onClick={meDoItForYou}>Сохранить</button>
+            <button type="button" className="cancelEdit">Отменить</button>
         </form>
         
     )
