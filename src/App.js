@@ -6,6 +6,7 @@ import Schedule from "./pages/Schedule";
 import Students from "./pages/Students";
 import "./css/navbar.css"
 import "./css/events.css"
+import "./css/students.css"
 
 
 function App(){ 

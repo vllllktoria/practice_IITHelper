@@ -18,7 +18,7 @@ const AddImage = () => {
       />
        {selectedImage && (
         <div>
-          <button onClick={() => setSelectedImage(null)}>Remove</button>
+          <button id= "deleteButton" onClick={() => setSelectedImage(null)}>Remove</button>
         </div>
       )}
     </div>

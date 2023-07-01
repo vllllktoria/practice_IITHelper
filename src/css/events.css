@@ -5,7 +5,7 @@ h1{
     font-weight: 350;
 }
 
-button{
+#deleteButton{
     background-color: #4F73EF;
     border: 2px solid #355BDE;
     border-radius: 6px;
