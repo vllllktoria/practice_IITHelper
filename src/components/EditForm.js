@@ -1,40 +1,97 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 
-function EditForm(props){
-    const [firstName, setFirstName] = useState(props.firstName);
-    const [lastName, setLastName] = useState(props.lastName);
-    const [group, setGroup] = useState(props.group);
-    let handleLName = function(e) {
-        setLastName(e.target.value);
-    }
-    let handlefName = function(e) {
-        setFirstName(e.target.value);
-    }
-    let handleGroup = function(e) {
-        setGroup(e.target.value);
-    }
+function EditForm(props) {
+  const [isOpen, setIsOpen] = useState(true);
+  const [surname, setSurname] = useState(props.surname || "");
+  const [name, setName] = useState(props.name || "");
+  const [group, setGroup] = useState(props.group || "");
+  const [patronymic, setPatronymic] = useState(props.patronymic || "");
+  const [tempSurname, setTempSurname] = useState(props.surname || "");
+  const [tempName, setTempName] = useState(props.name || "");
+  const [tempGroup, setTempGroup] = useState(props.group || "");
+  const [tempPatronymic, setTempPatronymic] = useState(props.patronymic || "");
 
-    let meDoItForYou = function() {
-        let userCopy = {...props.user}
-        userCopy.firstname = firstName
-        userCopy.lastname = lastName
-        userCopy.group = group
-        props.setLastName(lastName)
-        props.setFirstName(firstName)
-        props.setGroup(group)
-        props.handleEdit(userCopy)
-    }   
+  const handleSurname = function (e) {
+    setSurname(e.target.value);
+  };
 
-    return(
-        <form className="editForm">
-            <input placeholder="Фамилия" onChange={handleLName} />
-            <input placeholder="Имя" onChange={handlefName}/>
-            <input placeholder="Группа" onChange={handleGroup}/>
-            <button type="button" className="saveEdit" onClick={meDoItForYou}>Сохранить</button>
-            <button type="button" className="cancelEdit">Отменить</button>
-        </form>
-        
-    )
+  const handleName = function (e) {
+    setName(e.target.value);
+  };
+
+  const handlePatronymic = function (e) {
+    setPatronymic(e.target.value);
+  };
+
+  const handleGroup = function (e) {
+    setGroup(e.target.value);
+  };
+
+  const handleSave = function () {
+    const userCopy = {
+      ...props.user,
+      surname: surname,
+      name: name,
+      patronymic: patronymic,
+      group: group,
+    };
+
+    props.setSurname(surname);
+    props.setName(name);
+    props.setPatronymic(patronymic);
+    props.setGroup(group);
+    props.handleEdit(userCopy);
+
+    setIsOpen(false); // Закрыть окно редактирования после сохранения
+  };
+
+  const handleCancel = function () {
+    setSurname(tempSurname);
+    setName(tempName);
+    setPatronymic(tempPatronymic);
+    setGroup(tempGroup);
+
+    setIsOpen(false); // Закрыть окно редактирования при отмене
+  };
+
+  if (!isOpen) {
+    return null; // Не отображать форму редактирования, если окно закрыто
+  }
+
+  return (
+    <form className="editForm">
+      <input
+        type="text"
+        placeholder="Фамилия"
+        value={surname}
+        onChange={handleSurname}
+      />
+      <input
+        type="text"
+        placeholder="Имя"
+        value={name}
+        onChange={handleName}
+      />
+      <input
+        type="text"
+        placeholder="Отчество"
+        value={patronymic}
+        onChange={handlePatronymic}
+      />
+      <input
+        type="text"
+        placeholder="Группа"
+        value={group}
+        onChange={handleGroup}
+      />
+      <button type="button" className="saveEdit" onClick={handleSave}>
+        Сохранить
+      </button>
+      <button type="button" className="cancelEdit" onClick={handleCancel}>
+        Отменить
+      </button>
+    </form>
+  );
 }
 
-export default EditForm
+export default EditForm;

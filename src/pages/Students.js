@@ -8,20 +8,22 @@ function Students() {
     const [users, setUsers] = useState([
         {
             id: 1,
-            firstname: "ААА",
-            lastname: "ООО",
+            surname: "ААА",
+            name: "ООО",
+            patronymic: "УУУ",
             group: "ПрИ-301"
         },
         {
             id: 2,
-            firstname: "ИИИ",
-            lastname: "ЕЕЕ",
+            surname: "ИИИ",
+            name: "ЕЕЕ",
+            patronymic: "ЫЫЫ",
             group: "ПрИ-302"
         }
     ]);
-
-    /* useEffect(() => {
-        const apiUrl = 'http://45.9.42.26:8000/api/students';
+/* 
+    useEffect(() => {
+        const apiUrl = 'http://45.9.42.26:8000/api/students?group=301';
         let params = {
             params: {
                 group: "Group"
@@ -45,7 +47,7 @@ function Students() {
             <div>
                 <h1>Заявки</h1>
 
-                <input type="radio" id="all" name="choose" />
+                <input type="radio" id="all" name="choose" checked />
                 <label htmlFor="all">Все</label>
 
                 <input type="radio" id="checked" name="choose" />

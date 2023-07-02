@@ -6,7 +6,6 @@ const AddImage = () => {
 
   return (
     <div>
-      
       <input
         id="upload-btn"
         type="file"
