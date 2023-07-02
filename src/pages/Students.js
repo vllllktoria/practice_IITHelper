@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Users from "../components/Users";
-import axios from 'axios'
+//import axios from 'axios'
 
 
 function Students() {
@@ -61,45 +61,40 @@ function Students() {
         // setUsers(users[e.target.value.id].firstname = e.target.value.fi)
     }
     
-            return (
-            <div>
-                <h1>Заявки</h1>
-
-                <input
-                type="radio"
-                id="all"
-                name="choose"
-                value="all"
-                checked={filter === "all"}
-                onChange={handleFilterChange}
-                />
-                <label htmlFor="all">Все</label>
-
-                <input
-                type="radio"
-                id="checked"
-                name="choose"
-                value="checked"
-                checked={filter === "checked"}
-                onChange={handleFilterChange}
-                />
-                <label htmlFor="checked">Принятые</label>
-
-                <input
-                type="radio"
-                id="unChecked"
-                name="choose"
-                value="unChecked"
-                checked={filter === "unChecked"}
-                onChange={handleFilterChange}
-                />
-                <label htmlFor="unChecked">Отклоненные</label>
-
-
-                <main>
-                <Users users={filteredUsers} handleEdit={handleEdit} />
-                </main> 
-            </div>)
-    }
+    return (
+    <div>
+        <h1>Заявки</h1>
+        <input
+        type="radio"
+        id="all"
+        name="choose"
+        value="all"
+        checked={filter === "all"}
+        onChange={handleFilterChange}
+        />
+        <label htmlFor="all">Все</label>
+        <input
+        type="radio"
+        id="checked"
+        name="choose"
+        value="checked"
+        checked={filter === "checked"}
+        onChange={handleFilterChange}
+        />
+        <label htmlFor="checked">Принятые</label>
+        <input
+        type="radio"
+        id="unChecked"
+        name="choose"
+        value="unChecked"
+        checked={filter === "unChecked"}
+        onChange={handleFilterChange}
+        />
+        <label htmlFor="unChecked">Отклоненные</label>
+        <main>
+        <Users users={filteredUsers} handleEdit={handleEdit} />
+        </main> 
+    </div>)
+}
     
 export default Students

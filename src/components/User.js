@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faClose, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import EditForm from "./EditForm.js"
 
 function User(props){ 

@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 
 function EditForm(props) {
+
   const [isOpen, setIsOpen] = useState(true);
-  const [surname, setSurname] = useState(props.surname || "");
-  const [name, setName] = useState(props.name || "");
-  const [group, setGroup] = useState(props.group || "");
-  const [patronymic, setPatronymic] = useState(props.patronymic || "");
-  const [tempSurname, setTempSurname] = useState(props.surname || "");
-  const [tempName, setTempName] = useState(props.name || "");
-  const [tempGroup, setTempGroup] = useState(props.group || "");
-  const [tempPatronymic, setTempPatronymic] = useState(props.patronymic || "");
+  const [surname, setSurname] = useState(props.surname);
+  const [name, setName] = useState(props.name);
+  const [group, setGroup] = useState(props.group);
+  const [patronymic, setPatronymic] = useState(props.patronymic);
+  
+  const [tempSurname, setTempSurname] = useState(props.surname);
+  const [tempName, setTempName] = useState(props.name);
+  const [tempGroup, setTempGroup] = useState(props.group);
+  const [tempPatronymic, setTempPatronymic] = useState(props.patronymic);
 
   const handleSurname = function (e) {
     setSurname(e.target.value);
@@ -42,7 +44,7 @@ function EditForm(props) {
     props.setGroup(group);
     props.handleEdit(userCopy);
 
-    setIsOpen(false); // Закрыть окно редактирования после сохранения
+    setIsOpen(false); 
   };
 
   const handleCancel = function () {
@@ -51,11 +53,11 @@ function EditForm(props) {
     setPatronymic(tempPatronymic);
     setGroup(tempGroup);
 
-    setIsOpen(false); // Закрыть окно редактирования при отмене
+    setIsOpen(false); 
   };
 
   if (!isOpen) {
-    return null; // Не отображать форму редактирования, если окно закрыто
+    return null; 
   }
 
   return (
