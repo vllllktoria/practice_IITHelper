@@ -29,7 +29,8 @@ function User(props){
             <button className="checkBtn" onClick={checkHandleClick}>{ unchecked ? "Принято" : "Принять"}</button>
             <FontAwesomeIcon icon={faPenToSquare} onClick={() => {
                 setEdit(!edit);
-            }} className="editBtn"/>
+            }} className="editBtn"
+               title="Редактировать"/>
             <h3>{surname} {name} {patronymic} {group}</h3>
 
             {edit && <EditForm handleEdit={props.handleEdit} user={props.user} setSurname={setSurname} setName={setName} 
