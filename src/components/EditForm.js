@@ -61,7 +61,7 @@ function EditForm(props) {
   }
 
   return (
-    <form className="editForm">
+    <form id="editForm">
       <input
         type="text"
         placeholder="Фамилия"
@@ -86,10 +86,10 @@ function EditForm(props) {
         value={group}
         onChange={handleGroup}
       />
-      <button type="button" className="saveEdit" onClick={handleSave}>
+      <button type="button" className="Edit" onClick={handleSave}>
         Сохранить
       </button>
-      <button type="button" className="cancelEdit" onClick={handleCancel}>
+      <button type="button" className="Edit" onClick={handleCancel}>
         Отменить
       </button>
     </form>
