@@ -8,7 +8,6 @@ font-weight: 350;
 h3{
 font-weight: 500;
 }
-
 button {
 
 width: min-content;
@@ -151,7 +150,7 @@ margin-left: 100px;
 
 #all {
 cursor: pointer;
-margin-left: 100px;
+margin-left: -835px;
 }
 
 #check{
@@ -170,4 +169,16 @@ margin-left: 100px;
 
 #cancel{
     margin-left: 30px;
+}
+
+#acceptStudents{
+}
+
+#userData{
+    background-color: #fbfbfb;
+    padding: 10px;
+    width: 550px;
+    color: rgb(0, 0, 0);
+    border-radius: 7px;
+    border: 1px solid #000;
 }

@@ -70,7 +70,7 @@ function SendForm(){
       {showList && (
         <div id="checkbox-list">
           <label>
-            <input type="checkbox" />
+            <input type="checkbox" id="chooseGroup" />
             ПрИ-101
           </label>
           <label>
@@ -82,6 +82,7 @@ function SendForm(){
 
       <label>
         <input
+          id="chooseStudent"
           type="checkbox"
           className="chooseRecipient"
           onChange={handleStudentCheckboxChange}
@@ -102,7 +103,7 @@ function SendForm(){
         </div>
       )}
 
-      <button onClick={handleSubmit}>Отправить</button>
+      <button id="sendBtn" onClick={handleSubmit}>Отправить</button>
     </div>
   )
 

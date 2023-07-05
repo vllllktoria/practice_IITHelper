@@ -1,35 +1,20 @@
 import React, {useState, useEffect} from "react";
 import Users from "../components/Users";
-//import axios from 'axios'
+import axios from 'axios'
 
 
 function Students() {
 
-    const [statements, setStatements] = useState([
-      {
-          id: 1,
-          surname: "ААА",
-          name: "ООО",
-          patronymic: "УУУ",
-          group: "ПрИ-301"
-      },
-      {
-          id: 2,
-          surname: "ИИИ",
-          name: "ЕЕЕ",
-          patronymic: "ЫЫЫ",
-          group: "ПрИ-302"
-      }
-  ]);;
+    const [statements, setStatements] = useState([]);;
 
     
-    /* useEffect(() => {
+    useEffect(() => {
         const apiUrl = 'http://45.9.42.26:8000/api/statements';
         axios.get(apiUrl).then((resp) => {
             const users = resp.data;
             setStatements(users);
         });
-    }, [setStatements]); */
+    }, [setStatements]);
 
     const [filter, setFilter] = useState("all");
 
