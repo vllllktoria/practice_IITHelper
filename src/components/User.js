@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import EditForm from "./EditForm.js";
+import axios from 'axios'
 
 function User({ user, handleEdit }) {
   const [edit, setEdit] = useState(false);
@@ -14,8 +15,19 @@ function User({ user, handleEdit }) {
   const [isRejected, setRejected] = useState(false);
 
   const checkHandleClick = () => {
-    setAccepted(true);
-  };
+
+    axios.post("http://45.9.42.26:8000/api/statements/accept", {
+      surname: surname,
+      name: name,
+      group: group,
+      patronymic: patronymic
+    })
+    .then(response => {
+      console.log("Запрос отправлен", "id пользователя:", response.data.id);
+
+      setAccepted(true);
+    })
+  }
 
   const rejectHandleClick = () => {
     setRejected(true);
