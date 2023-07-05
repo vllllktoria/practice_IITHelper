@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 
-function EditForm(props) {
+function EditForm({user, updateUser, setUserName, setUserGroup, setUserPatronymic, setUserSurname}) {
 
   const [isOpen, setIsOpen] = useState(true);
-  const [surname, setSurname] = useState(props.surname);
-  const [name, setName] = useState(props.name);
-  const [group, setGroup] = useState(props.group);
-  const [patronymic, setPatronymic] = useState(props.patronymic);
-  
-  const [tempSurname, setTempSurname] = useState(props.surname);
-  const [tempName, setTempName] = useState(props.name);
-  const [tempGroup, setTempGroup] = useState(props.group);
-  const [tempPatronymic, setTempPatronymic] = useState(props.patronymic);
+  const [surname, setSurname] = useState(user.surname);
+  const [name, setName] = useState(user.name);
+  const [group, setGroup] = useState(user.group);
+  const [patronymic, setPatronymic] = useState(user.patronymic);
 
   const handleSurname = function (e) {
     setSurname(e.target.value);
@@ -30,28 +25,21 @@ function EditForm(props) {
   };
 
   const handleSave = function () {
-    const userCopy = {
-      ...props.user,
-      surname: surname,
-      name: name,
-      patronymic: patronymic,
-      group: group,
-    };
+    setUserSurname(surname)
+    setUserName(name)
+    setUserPatronymic(patronymic)
+    setUserGroup(group)
 
-    props.setSurname(surname);
-    props.setName(name);
-    props.setPatronymic(patronymic);
-    props.setGroup(group);
-    props.handleEdit(userCopy);
+    updateUser(user)
 
     setIsOpen(false); 
   };
 
   const handleCancel = function () {
-    setSurname(tempSurname);
-    setName(tempName);
-    setPatronymic(tempPatronymic);
-    setGroup(tempGroup);
+//    setSurname(tempSurname);
+//    setName(tempName);
+//    setPatronymic(tempPatronymic);
+//    setGroup(tempGroup);
 
     setIsOpen(false); 
   };
@@ -61,7 +49,7 @@ function EditForm(props) {
   }
 
   return (
-    <form id="editForm">
+    <form id="editForm" className={"form-edit-statement"}>
       <input
         type="text"
         placeholder="Фамилия"
@@ -89,7 +77,7 @@ function EditForm(props) {
       <button type="button" className="Edit" onClick={handleSave}>
         Сохранить
       </button>
-      <button type="button" className="Edit" onClick={handleCancel}>
+      <button type="button" id="cancel" className="Edit" onClick={handleCancel}>
         Отменить
       </button>
     </form>
