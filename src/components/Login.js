@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function Login() {
-
   const [phoneNumber, setPhoneNumber] = useState('');
   const [confirmationCode, setConfirmationCode] = useState('');
-  const [isCodeSent, setIsCodeSent] = useState(false);
-  const botToken = '';
 
   const handlePhoneNumberChange = (e) => {
     setPhoneNumber(e.target.value);
@@ -17,26 +14,31 @@ function Login() {
   };
 
   const handleSendCode = async () => {
-    try {
+    /* try {
       const response = await axios.post(
-        `https://api.telegram.org/bot${botToken}/auth.sendCode`,
+        `https://api.telegram.org/bot/auth.sendCode`,
         {
           phone_number: phoneNumber,
+          settings: {
+            api_id,
+            api_hash
+          },
         }
       );
+
       console.log(response.data);
-      setIsCodeSent(true);
     } catch (error) {
       console.error(error);
-    }
+    } */
   };
 
   const handleSignIn = async () => {
-    try {
+   /*  try {
       const response = await axios.post(
-        `https://api.telegram.org/bot${botToken}/auth.signIn`,
+        `https://api.telegram.org/bot/auth.signIn`,
         {
           phone_number: phoneNumber,
+          phone_code_hash,
           phone_code: confirmationCode,
         }
       );
@@ -45,28 +47,28 @@ function Login() {
 
       const token = response.data.result.auth_token;
       localStorage.setItem('auth_token', token);
+
     } catch (error) {
       console.error(error);
-    }
+    } */
   };
 
   return (
-    <div id ="login">
-      <h2 id="loginTxt">Login</h2>
-      {!isCodeSent && (
-        <div>
-          <input id="phoneNum" placeholder="Номер телефона" type="text" value={phoneNumber} onChange={handlePhoneNumberChange} />
-          <button id="sendCode"onClick={handleSendCode}>Получить код</button>
-        </div>
-      )}
-      {isCodeSent && (
-        <div>
-          <input  placeholder="Код подтверждения" type="text" value={confirmationCode} onChange={handleConfirmationCodeChange} />
-          <button onClick={handleSignIn}>Войти</button>
-        </div>
-      )}
+    <div>
+      <h2>Login</h2>
+      <div>
+        <label>Phone Number:</label>
+        <input type="text" value={phoneNumber} onChange={handlePhoneNumberChange} />
+      </div>
+      <div>
+        <label>Confirmation Code:</label>
+        <input type="text" value={confirmationCode} onChange={handleConfirmationCodeChange} />
+      </div>
+      <button onClick={handleSendCode}>Send Code</button>
+      <button onClick={handleSignIn}>Sign In</button>
     </div>
   );
 };
 
 export default Login;
+

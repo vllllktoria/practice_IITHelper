@@ -1,0 +1,42 @@
+#phoneNum{
+    display: flex;
+    justify-content: center;
+    margin-left: 100px;
+    width: 50%;
+    padding: 10px;
+    font-weight: 350;
+    margin-bottom: 10px;
+    font-size: 15px;
+    border-radius: 7px;
+    border: 2px solid #dfdfdf;
+}
+#sendCode{
+    cursor: pointer;
+    background-color: #4F73EF;
+    border: 2px solid #355BDE;
+    border-radius: 6px;
+    padding: 8px;
+    color: white;
+    width: min-content;
+    margin-left: 150px;
+}
+
+#sendCode:hover{
+    background-color: #355BDE;
+}
+
+#login{
+    margin-left:550px;
+    margin-top: 200px;
+    background-color: #fcfcfcf7;
+    padding: 10px;
+    width: 400px;
+    color: #4F73EF;
+    border-radius: 7px;
+    border: 2px solid #dfdfdf;
+}
+
+#loginTxt{
+    text-align: center;
+    font-weight: 450;
+}

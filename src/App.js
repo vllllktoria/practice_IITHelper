@@ -4,9 +4,11 @@ import NavBar from "./components/NavBar"
 import CreateEvents from "./pages/CreateEvents";
 import Schedule from "./pages/Schedule";
 import Students from "./pages/Students";
+import Auth from "./pages/Auth";
 import "./css/navbar.css"
 import "./css/events.css"
 import "./css/students.css"
+import "./css/auth.css"
 
 
 function App(){ 
@@ -18,6 +20,7 @@ function App(){
               <Route path='/events' element={<CreateEvents />} />
               <Route path='/schedule' element={<Schedule />} />
               <Route path='/students' element={<Students />} />
+              <Route path='/auth' element={<Auth />} />
             </Routes>
          </BrowserRouter>
       </div>
