@@ -1,17 +1,36 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function SendForm() {
   const [showList, setShowList] = useState(false);
   const [showStudentList, setShowStudentList] = useState(false);
-  const [textInput, setTextInput] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState("");
-  const [selectedRepeat, setSelectedRepeat] = useState("");
+  const [textInput, setTextInput] = useState();
+  //const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedDate, setSelectedDate] = useState();
+  const [selectedTime, setSelectedTime] = useState();
+  const [selectedRepeat, setSelectedRepeat] = useState();
   const [sendNow, setSendNow] = useState(true);
   const [laterSelected, setLaterSelected] = useState(false);
   const [title, setTitle] = useState("");
+  const [students, setStudents] = useState([]);
+  const [groups, setGroups] = useState([]);
+
+    useEffect(() => {
+      const apiUrl = 'http://45.9.42.26:22000/api/student';
+      axios.get(apiUrl).then((resp) => {
+          const student = resp.data;
+          setStudents(student);
+      });
+  }, [setStudents]);
+
+  useEffect(() => {
+    const apiUrl = 'http://45.9.42.26:22000/api/group';
+    axios.get(apiUrl).then((resp) => {
+        const group = resp.data;
+        setGroups(group);
+    });
+}, [setGroups]);
 
   const handleCheckboxChange = () => {
     setShowList(!showList);
@@ -25,14 +44,14 @@ function SendForm() {
     setTextInput(event.target.value);
   };
 
-  const handleImageChange = (event) => {
+/*   const handleImageChange = (event) => {
     setSelectedImage(event.target.files[0]);
-  };
+  }; */
 
-  const handleImageRemove = () => {
+/*   const handleImageRemove = () => {
     setSelectedImage(null);
   };
-
+ */
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
@@ -58,21 +77,27 @@ function SendForm() {
 
   const handleSubmit = () => {
     if (sendNow) {
-      console.log("Отправлено");
-      console.log("Текст:", textInput);
+      const data = {
+        title: title,
+        text: textInput,
+        sendNow: sendNow
+      };
+      console.log(JSON.stringify(data));
     } else {
-      console.log("Отправлено");
-      console.log("Текст:", textInput);
-      console.log("Дата:", selectedDate);
-      console.log("Время:", selectedTime);
-      console.log("Повторение:", selectedRepeat);
+      const data = {
+        title: title,
+        text: textInput,
+        date: selectedDate,
+        time: selectedTime,
+        repeat: selectedRepeat
+      };
+      console.log(JSON.stringify(data));
     }
   };
 
   return (
     <div className="container">
       <div className="main-wrapper">
-        <h1>Создание события</h1>
       <div className="send-form-container">
 
         <div className="textarea-container">
@@ -107,19 +132,17 @@ function SendForm() {
             />
             <p>Группа</p>
             </div>
-            {showList && (
-            <div className="checkbox-list">
-              <label>
-                <input type="checkbox" id="chooseGroup" />
-                ПрИ-101
+                {showList && (
+                  <div className="checkbox-list">
+                    {groups.map((group) => (
+                      <label>
+                        <input type="checkbox" />
+                        {group.title}
+                      </label>
+                    ))}
+                  </div>
+              )}
               </label>
-              <label>
-                <input type="checkbox" />
-                ПрИ-102
-              </label>
-            </div>
-          )}
-          </label>
 
           <label id="student"> 
             <div className="input-wrapper">
@@ -129,25 +152,21 @@ function SendForm() {
               className="chooseRecipient"
               onChange={handleStudentCheckboxChange}
             />
-            <p>
-              Студент
-            </p>
+            <p>Студент</p>
             </div>
-          
-
-          {showStudentList && (
-            <div className="checkbox-list">
-              <label>
-                <input type="checkbox" />
-                ПрИ-101
+                {showStudentList && (
+                  <div className="checkbox-list">
+                    {students.map((student) => (
+                      <label key={student.id}>
+                        <input type="checkbox" />
+                        {student.surname}
+                        {student.name}
+                        {student.patronymic}
+                      </label>
+                    ))}
+                  </div>
+                )}
               </label>
-              <label>
-                <input type="checkbox" />
-                ПрИ-102
-              </label>
-            </div>
-          )}
-          </label>
           <div className="sendBtn-wrapper">
             <button id="sendBtn" onClick={handleSubmit}>Отправить</button>
           </div>
@@ -174,12 +193,9 @@ function SendForm() {
             />
             Позже
           </label>
-        </div>
-
-        {!sendNow && laterSelected && (
+          {!sendNow && laterSelected && (
           <div>
             <label className="options">
-              Дата:
               <input
                 type="date"
                 value={selectedDate}
@@ -188,15 +204,23 @@ function SendForm() {
             </label>
 
             <label className="options">
-              Время:
               <input
                 type="time"
                 value={selectedTime}
                 onChange={handleTimeChange}
               />
             </label>
+            <label className="options">
+                <input
+                  type="checkbox"
+                  checked={selectedRepeat}
+                  onChange={handleRepeatChange}
+                />
+                Повторять уведомление
+              </label>
           </div>
         )}
+        </div>
       </div>
     </div>
     </div>

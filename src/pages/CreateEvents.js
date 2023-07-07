@@ -5,7 +5,7 @@ function CreateEvents() {
  
   return (
     <div>
-      
+      <h1>Создание события</h1>
       <SendForm />
     </div>
   );
