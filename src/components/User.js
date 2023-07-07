@@ -17,7 +17,7 @@ function User({ user, handleEdit, onSaveAcceptedUser }) {
 
   const checkHandleClick = () => {
 
-    axios.post("http://45.9.42.26:8000/api/statements/accept", {
+    axios.post("http://45.9.42.26:22000/api/statement", {
       surname: surname,
       name: name,
       group: group,
