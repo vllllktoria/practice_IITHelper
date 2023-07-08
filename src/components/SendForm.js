@@ -1,12 +1,11 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import SentEvent from "./SentEvent";
 
 function SendForm() {
   const [showList, setShowList] = useState(false);
   const [showStudentList, setShowStudentList] = useState(false);
   const [textInput, setTextInput] = useState();
-  //const [selectedImage, setSelectedImage] = useState(null);
   const [selectedDate, setSelectedDate] = useState();
   const [selectedTime, setSelectedTime] = useState();
   const [selectedRepeat, setSelectedRepeat] = useState();
@@ -15,7 +14,7 @@ function SendForm() {
   const [title, setTitle] = useState("");
   const [students, setStudents] = useState([]);
   const [groups, setGroups] = useState([]);
-  const [sentEvent, setSentEvent] = useState(null); 
+  const [sentEvent, setSentEvent] = useState(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [feedbackData, setFeedbackData] = useState(null);
 
@@ -27,25 +26,25 @@ function SendForm() {
       date: currentDate,
       time: currentTime
     };
-  }
+  };
 
-    const [currentSendDateTime, setCurrentSendDateTime] = useState(getCurrentDateTime());
+  const [currentSendDateTime, setCurrentSendDateTime] = useState(getCurrentDateTime());
 
-    useEffect(() => {
-      const apiUrl = 'http://45.9.42.26:22000/api/student';
-      axios.get(apiUrl).then((resp) => {
-          const student = resp.data;
-          setStudents(student);
-      });
-  }, [setStudents]);
+  useEffect(() => {
+    const apiUrl = 'http://45.9.42.26:22000/api/student';
+    axios.get(apiUrl).then((resp) => {
+      const student = resp.data;
+      setStudents(student);
+    });
+  }, []);
 
   useEffect(() => {
     const apiUrl = 'http://45.9.42.26:22000/api/group';
     axios.get(apiUrl).then((resp) => {
-        const group = resp.data;
-        setGroups(group);
+      const group = resp.data;
+      setGroups(group);
     });
-}, [setGroups]);
+  }, []);
 
   const handleCheckboxChange = () => {
     setShowList(!showList);
@@ -59,14 +58,6 @@ function SendForm() {
     setTextInput(event.target.value);
   };
 
-/*   const handleImageChange = (event) => {
-    setSelectedImage(event.target.files[0]);
-  }; */
-
-/*   const handleImageRemove = () => {
-    setSelectedImage(null);
-  };
- */
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
@@ -88,10 +79,9 @@ function SendForm() {
     }
   };
 
-  
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
-  }
+  };
 
   const handleSubmit = () => {
     if (sendNow) {
@@ -133,162 +123,132 @@ function SendForm() {
   return (
     <div className="container">
       <div className="main-wrapper">
-      <div className="send-form-container">
-
-        <div className="textarea-container">
-
-        <label>
-            <input
-              placeholder="Название"
+        <div className="send-form-container">
+          <div className="textarea-container">
+            <label>
+              <input
+                placeholder="Название"
+                type="text"
+                className="title"
+                value={title}
+                onChange={handleTitleChange}
+              />
+            </label>
+            <textarea
+              placeholder="Enter text..."
               type="text"
-              className="title"
-              value={title}
-              onChange={handleTitleChange}
-            />
-          </label>
-
-        <textarea
-          placeholder="Enter text..."
-          type="text"
-          className="inputText"
-          value={textInput}
-          onChange={handleTextChange}
-        ></textarea>
-
-        <h3 className="recipient">Выбрать получателя:</h3>
-
-        <div className="checkboxes-wrapper">
-          <label id="group">
-            <div className="input-wrapper">
-            <input
-              type="checkbox"
-              className="chooseRecipient"
-              onChange={handleCheckboxChange}
-            />
-            <p>Группа</p>
-            </div>
+              className="inputText"
+              value={textInput}
+              onChange={handleTextChange}
+            ></textarea>
+            <h3 className="recipient">Выбрать получателя:</h3>
+            <div className="checkboxes-wrapper">
+              <label id="group">
+                <div className="input-wrapper">
+                  <input
+                    type="checkbox"
+                    className="chooseRecipient"
+                    onChange={handleCheckboxChange}
+                  />
+                  <p>Группа</p>
+                </div>
                 {showList && (
                   <div className="checkbox-list">
                     {groups.map((group) => (
-                      <label>
+                      <label key={group.id}>
                         <input type="checkbox" />
                         {group.title}
                       </label>
                     ))}
                   </div>
-              )}
+                )}
               </label>
-
-          <label id="student"> 
-            <div className="input-wrapper">
-            <input
-              id="chooseStudent"
-              type="checkbox"
-              className="chooseRecipient"
-              onChange={handleStudentCheckboxChange}
-            />
-            <p>Студент</p>
-            </div>
+              <label id="student">
+                <div className="input-wrapper">
+                  <input
+                    id="chooseStudent"
+                    type="checkbox"
+                    className="chooseRecipient"
+                    onChange={handleStudentCheckboxChange}
+                  />
+                  <p>Студент</p>
+                </div>
                 {showStudentList && (
                   <div className="checkbox-list">
                     {students.map((student) => (
                       <label key={student.id}>
                         <input type="checkbox" />
-                        {student.surname}
-                        {student.name}
-                        {student.patronymic}
+                        {student.surname} {student.name} {student.patronymic}
                       </label>
                     ))}
                   </div>
                 )}
               </label>
-              
-          <div className="sendBtn-wrapper">
-            <button id="sendBtn" onClick={handleSubmit}>Отправить</button>
+              <div className="sendBtn-wrapper">
+                <button id="sendBtn" onClick={handleSubmit}>
+                  Отправить
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="button-container">
+            <label>
+              <input
+                type="radio"
+                value="now"
+                checked={sendNow}
+                onChange={handleSendModeChange}
+              />
+              Сейчас
+            </label>
+            <label className="sendTime">
+              <input
+                type="radio"
+                value="later"
+                checked={laterSelected}
+                onChange={handleSendModeChange}
+              />
+              Позже
+            </label>
+            {!sendNow && laterSelected && (
+              <div>
+                <label className="options">
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                  />
+                </label>
+                <label className="options">
+                  <input
+                    type="time"
+                    value={selectedTime}
+                    onChange={handleTimeChange}
+                  />
+                </label>
+                <label className="options">
+                  <input
+                    type="checkbox"
+                    checked={selectedRepeat}
+                    onChange={handleRepeatChange}
+                  />
+                  Повторять уведомление
+                </label>
+              </div>
+            )}
           </div>
         </div>
-        </div>
-
-        <div className="button-container">
-          <label>
-            <input
-              type="radio"
-              value="now"
-              checked={sendNow}
-              onChange={handleSendModeChange}
+        <div>
+          <h3 id="sentEvent">Отправленные события:</h3>
+          {sentEvent && (
+            <SentEvent
+              title={sentEvent.title}
+              date={sendNow ? currentSendDateTime.date : sentEvent.date}
+              time={sendNow ? currentSendDateTime.time : sentEvent.time}
             />
-            Сейчас
-          </label>
-          <label className="sendTime">
-            <input
-              type="radio"
-              value="later"
-              checked={laterSelected}
-              onChange={handleSendModeChange}
-            />
-            Позже
-          </label>
-          {!sendNow && laterSelected && (
-          <div>
-            <label className="options">
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={handleDateChange}
-              />
-            </label>
-
-            <label className="options">
-              <input
-                type="time"
-                value={selectedTime}
-                onChange={handleTimeChange}
-              />
-            </label>
-            <label className="options">
-                <input
-                  type="checkbox" 
-                  checked={selectedRepeat}
-                  onChange={handleRepeatChange}
-                />
-                Повторять уведомление
-              </label>
-          </div>
-        )}
+          )}
         </div>
       </div>
-      <div>
-        <h3 id="sentEvent">Отправленные события:</h3>
-        {sentEvent && ( <div className="sent-event">
-          <div className="sent-event-content">
-            <p className="event-title">{sentEvent.title}</p>
-            <span className="event-datetime" id="date">
-            {sendNow ? currentSendDateTime.date : sentEvent.date} 
-            </span>
-            <span className="event-datetime" id="time">
-            {sendNow ? currentSendDateTime.time : sentEvent.time}
-            </span>
-          </div>
-          <button className="feedback-btn"onClick={handleViewFeedback}>Обратная связь</button>
-          {showFeedbackForm && feedbackData && (
-          <div className="feedback-form">
-          {feedbackData.map((feedback, index) => (
-            <div key={index}>
-              <p>Оценка: {feedback.rating}</p>
-              <p>Комментарий: {feedback.comment}</p>
-            </div>
-          ))}
-          <button className="feedback-btn" onClick={handleFeedbackClose}>
-            Закрыть
-          </button>
-        </div>
-        )}
-        </div>
-        )}
-        </div>
-        
-    </div>
-        
     </div>
   );
 }
