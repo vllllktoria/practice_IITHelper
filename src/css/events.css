@@ -186,17 +186,17 @@ label#student {
 
 .feedback-form{
   background-color: #fbfbfb;
-  padding: 4px 10px;
+  
   width: 70%;
-  color: rgb(0, 0, 0);
+  color: rgb(0, 0, 0);/* 
   border-radius: 5px;
-  border: 1px solid #000;
+  border: 1px solid #000; */
 }
-
+/* 
 #feedback{
   margin-left: 810px;
   margin-top: -147px;
-}
+} */
 
 .feedback-btn{
   width: 100px;
@@ -205,7 +205,6 @@ label#student {
   border: 1px solid #000;
   background-color: #eeeeee;
   border-radius: 3px;
-  margin-top: 20px;
 }
 
 .feedback-btn:hover {
@@ -214,4 +213,8 @@ label#student {
 
 #time{
   margin-left: 10px;
+}
+
+#feedback{
+  margin-top: 5px;
 }

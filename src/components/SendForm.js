@@ -116,10 +116,11 @@ function SendForm() {
   };
 
   const handleViewFeedback = () => {
-    const receivedFeedbackData = {
-      rating: 3,
-      comment: "ок"
-    };
+    const receivedFeedbackData = [
+      { rating: 3, comment: "ок" },
+      { rating: 4, comment: "норм" },
+      { rating: 5, comment: "прекрасно" }
+    ];
     setFeedbackData(receivedFeedbackData);
     setShowFeedbackForm(true);
   };
@@ -269,11 +270,25 @@ function SendForm() {
             </span>
           </div>
           <button className="feedback-btn"onClick={handleViewFeedback}>Обратная связь</button>
+          {showFeedbackForm && feedbackData && (
+          <div className="feedback-form">
+          {feedbackData.map((feedback, index) => (
+            <div key={index}>
+              <p>Оценка: {feedback.rating}</p>
+              <p>Комментарий: {feedback.comment}</p>
+            </div>
+          ))}
+          <button className="feedback-btn" onClick={handleFeedbackClose}>
+            Закрыть
+          </button>
         </div>
         )}
         </div>
+        )}
+        </div>
+        
     </div>
-    
+        
     </div>
   );
 }
