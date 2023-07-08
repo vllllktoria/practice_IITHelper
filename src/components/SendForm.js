@@ -15,6 +15,21 @@ function SendForm() {
   const [title, setTitle] = useState("");
   const [students, setStudents] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [sentEvent, setSentEvent] = useState(null); 
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [feedbackData, setFeedbackData] = useState(null);
+
+  const getCurrentDateTime = () => {
+    const currentDateTime = new Date();
+    const currentDate = currentDateTime.toLocaleDateString();
+    const currentTime = currentDateTime.toLocaleTimeString();
+    return {
+      date: currentDate,
+      time: currentTime
+    };
+  }
+
+    const [currentSendDateTime, setCurrentSendDateTime] = useState(getCurrentDateTime());
 
     useEffect(() => {
       const apiUrl = 'http://45.9.42.26:22000/api/student';
@@ -68,6 +83,9 @@ function SendForm() {
     const selectedValue = event.target.value === "later";
     setSendNow(!selectedValue);
     setLaterSelected(selectedValue);
+    if (!selectedValue) {
+      setCurrentSendDateTime(getCurrentDateTime());
+    }
   };
 
   
@@ -83,6 +101,7 @@ function SendForm() {
         sendNow: sendNow
       };
       console.log(JSON.stringify(data));
+      setSentEvent(data);
     } else {
       const data = {
         title: title,
@@ -92,7 +111,22 @@ function SendForm() {
         repeat: selectedRepeat
       };
       console.log(JSON.stringify(data));
+      setSentEvent(data);
     }
+  };
+
+  const handleViewFeedback = () => {
+    const receivedFeedbackData = {
+      rating: 3,
+      comment: "ок"
+    };
+    setFeedbackData(receivedFeedbackData);
+    setShowFeedbackForm(true);
+  };
+
+  const handleFeedbackClose = () => {
+    setShowFeedbackForm(false);
+    setFeedbackData(null);
   };
 
   return (
@@ -167,11 +201,11 @@ function SendForm() {
                   </div>
                 )}
               </label>
+              
           <div className="sendBtn-wrapper">
             <button id="sendBtn" onClick={handleSubmit}>Отправить</button>
           </div>
         </div>
-        
         </div>
 
         <div className="button-container">
@@ -212,7 +246,7 @@ function SendForm() {
             </label>
             <label className="options">
                 <input
-                  type="checkbox"
+                  type="checkbox" 
                   checked={selectedRepeat}
                   onChange={handleRepeatChange}
                 />
@@ -222,7 +256,24 @@ function SendForm() {
         )}
         </div>
       </div>
+      <div>
+        <h3 id="sentEvent">Отправленные события:</h3>
+        {sentEvent && ( <div className="sent-event">
+          <div className="sent-event-content">
+            <p className="event-title">{sentEvent.title}</p>
+            <span className="event-datetime" id="date">
+            {sendNow ? currentSendDateTime.date : sentEvent.date} 
+            </span>
+            <span className="event-datetime" id="time">
+            {sendNow ? currentSendDateTime.time : sentEvent.time}
+            </span>
+          </div>
+          <button className="feedback-btn"onClick={handleViewFeedback}>Обратная связь</button>
+        </div>
+        )}
+        </div>
     </div>
+    
     </div>
   );
 }

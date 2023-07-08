@@ -165,3 +165,53 @@ label#group {
 label#student {
   flex-grow: 0.25;
 }
+
+#sentEvent{
+  font-weight: 470;
+}
+
+.sent-event{
+  
+  background-color: #fbfbfb;
+  padding: 4px 10px;
+  width: 70%;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+.event-title{
+  font-weight: 500;
+}
+
+.feedback-form{
+  background-color: #fbfbfb;
+  padding: 4px 10px;
+  width: 70%;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+#feedback{
+  margin-left: 810px;
+  margin-top: -147px;
+}
+
+.feedback-btn{
+  width: 100px;
+  height: 35px;
+  cursor: pointer;
+  border: 1px solid #000;
+  background-color: #eeeeee;
+  border-radius: 3px;
+  margin-top: 20px;
+}
+
+.feedback-btn:hover {
+  background-color: #e6e6e6;
+  }
+
+#time{
+  margin-left: 10px;
+}
