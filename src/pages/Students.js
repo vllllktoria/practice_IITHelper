@@ -9,7 +9,7 @@ function Students() {
 
     
     useEffect(() => {
-        const apiUrl = 'http://45.9.42.26:8000/api/statements';
+        const apiUrl = 'http://45.9.42.26:22000/api/statement';
         axios.get(apiUrl).then((resp) => {
             const users = resp.data;
             setStatements(users);
