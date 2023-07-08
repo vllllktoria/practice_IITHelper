@@ -5,6 +5,7 @@ import CreateEvents from "./pages/CreateEvents";
 import Schedule from "./pages/Schedule";
 import Students from "./pages/Students";
 import Auth from "./pages/Auth";
+import AllEvents from "./pages/AllEvents";
 import "./css/navbar.css"
 import "./css/events.css"
 import "./css/students.css"
@@ -21,6 +22,7 @@ function App(){
               <Route path='/schedule' element={<Schedule />} />
               <Route path='/students' element={<Students />} />
               <Route path='/auth' element={<Auth />} />
+              <Route path='/all' element={<AllEvents />} />
             </Routes>
          </BrowserRouter>
       </div>
