@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function SentEvent() {
+  const [selectedEventId, setSelectedEventId] = useState(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [gradeData, setGradeData] = useState([]);
   const [feedbackData, setFeedbackData] = useState([]);
   const [events, setEvents] = useState([]);
 
@@ -23,13 +25,20 @@ function SentEvent() {
 
   const handleViewFeedback = async (event) => {
     const eventId = event.id;
+    setSelectedEventId(eventId);
+
     try {
       const gradeUrl = `http://45.9.42.26:22001/api/event/${eventId}/grade`;
-      const response = await axios.get(gradeUrl);
-      const feedbackData = response.data;
+      const gradeResponse = await axios.get(gradeUrl);
+      const gradeData = gradeResponse.data;
+
+      const feedbackUrl = `http://45.9.42.26:22001/api/event/${eventId}/feedback`;
+      const feedbackResponse = await axios.get(feedbackUrl);
+      const feedbackData = feedbackResponse.data;
+
+      setGradeData(gradeData);
       setFeedbackData(feedbackData);
       setShowFeedbackForm(true);
-      console.log("good")
     } catch (error) {
       console.error("Error", error);
     }
@@ -37,7 +46,9 @@ function SentEvent() {
 
   const handleFeedbackClose = () => {
     setShowFeedbackForm(false);
+    setGradeData([]);
     setFeedbackData([]);
+    setSelectedEventId(null);
   };
 
   return (
@@ -58,14 +69,26 @@ function SentEvent() {
           >
             Обратная связь
           </button>
-          {showFeedbackForm && feedbackData.length > 0 && (
+          {showFeedbackForm && selectedEventId === event.id && (
             <div className="feedback-form">
-              {feedbackData.map((fb, index) => (
-                <div key={index}>
-                  <p>Оценка: {fb.grade}</p>
-                  <p>Комментарий: {fb.feedback}</p>
-                </div>
-              ))}
+              {gradeData.length > 0 ? (
+                gradeData.map((grade, index) => (
+                  <div key={index}>
+                    <p>Оценка: {grade}</p>
+                  </div>
+                ))
+              ) : (
+                <p>Оценок нет</p>
+              )}
+              {feedbackData.length > 0 ? (
+                feedbackData.map((feedback, index) => (
+                  <div key={index}>
+                    <p>Комментарий: {feedback}</p>
+                  </div>
+                ))
+              ) : (
+                <p>Комментариев нет</p>
+              )}
               <button className="feedback-btn" onClick={handleFeedbackClose}>
                 Закрыть
               </button>

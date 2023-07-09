@@ -174,10 +174,12 @@ label#student {
   
   background-color: #fbfbfb;
   padding: 4px 10px;
-  width: 70%;
+  width:60%;
   color: rgb(0, 0, 0);
   border-radius: 5px;
   border: 1px solid #000;
+  margin-left: 100px;
+  margin-bottom: 10px;
 }
 
 .event-title{
