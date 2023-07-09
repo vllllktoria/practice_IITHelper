@@ -261,7 +261,6 @@ function SendForm() {
           </div>
         </div>
       </div>
-      <SentEvent />
     </div>
   );
 }

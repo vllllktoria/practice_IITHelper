@@ -10,23 +10,30 @@ function User({ user, handleEdit, statementId }) {
   const [name, setName] = useState(user.name);
   const [group, setGroup] = useState(user.group);
   const [patronymic, setPatronymic] = useState(user.patronymic);
-  const [id, setId] = useState(user.id);
   const [renderUser, updateUser] = useState(user);
   const [isAccepted, setAccepted] = useState(false);
   const [isRejected, setRejected] = useState(false);
   const [acceptedUser, setAcceptedUser] = useState(null);
+  const [rejectedUser, setRejectedUser] = useState(null);
   
   const checkHandleClick = () => {
     const acceptedUserData = {
       surname: surname,
       name: name,
-      groupName: group,
       patronymic: patronymic,
-      userId: id,
-      isChecked: isAccepted
+      groupName: group
     };
-  
-    axios.post(`http://45.9.42.26:22000/api/statement/${id}/accept`, acceptedUserData)
+    
+    axios
+      .post(
+        `http://45.9.42.26:22000/api/statement/${statementId}/accept`,
+        acceptedUserData,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
       .then(response => {
         setAccepted(true);
         setAcceptedUser(response.data); 
@@ -36,10 +43,31 @@ function User({ user, handleEdit, statementId }) {
       });
   };
 
-  console.log(user)
-
   const rejectHandleClick = () => {
-    setRejected(true);
+    const rejectedUserData = {
+      surname: surname,
+      name: name,
+      patronymic: patronymic,
+      groupName: group
+    };
+    
+    axios
+      .post(
+        `http://45.9.42.26:22000/api/statement/${statementId}/dismiss`,
+        rejectedUserData,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(response => {
+        setRejected(true);
+        setRejectedUser(response.data); 
+      })
+      .catch(error => {
+        console.error("Ошибка", error);
+      });
   };
 
   return (

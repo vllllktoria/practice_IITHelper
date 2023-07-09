@@ -17,7 +17,7 @@ function Users({ users, handleEdit }) {
             user={user}
             handleEdit={handleEdit}
             onSaveAcceptedUser={handleSaveAcceptedUser}
-            statementId={user.statementId}
+            statementId={user.id}
           />
         ))}
         {acceptedUsersData.length > 0 && (
