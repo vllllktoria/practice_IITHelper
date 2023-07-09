@@ -9,7 +9,7 @@ function SentEvent() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const apiUrl = 'http://45.9.42.26:22001/api/event';
+        const apiUrl = "http://45.9.42.26:22001/api/event";
         const response = await axios.get(apiUrl);
         const events = response.data;
         setEvents(events);
@@ -21,10 +21,18 @@ function SentEvent() {
     fetchEvents();
   }, []);
 
-  const handleViewFeedback = () => {
-    const receivedFeedbackData = [];
-    setFeedbackData(receivedFeedbackData);
-    setShowFeedbackForm(true);
+  const handleViewFeedback = async (event) => {
+    const eventId = event.id;
+    try {
+      const gradeUrl = `http://45.9.42.26:22001/api/event/${eventId}/grade`;
+      const response = await axios.get(gradeUrl);
+      const feedbackData = response.data;
+      setFeedbackData(feedbackData);
+      setShowFeedbackForm(true);
+      console.log("good")
+    } catch (error) {
+      console.error("Error", error);
+    }
   };
 
   const handleFeedbackClose = () => {
@@ -43,15 +51,19 @@ function SentEvent() {
               {event.eventTime}
             </span>
           </div>
-          <button className="feedback-btn" onClick={handleViewFeedback}>
+          <button
+            className="feedback-btn"
+            onClick={() => handleViewFeedback(event)}
+            disabled={!event.hasFeedback}
+          >
             Обратная связь
           </button>
           {showFeedbackForm && feedbackData.length > 0 && (
             <div className="feedback-form">
-              {feedbackData.map((feedback, index) => (
+              {feedbackData.map((fb, index) => (
                 <div key={index}>
-                  <p>Оценка: {feedback.rating}</p>
-                  <p>Комментарий: {feedback.comment}</p>
+                  <p>Оценка: {fb.grade}</p>
+                  <p>Комментарий: {fb.feedback}</p>
                 </div>
               ))}
               <button className="feedback-btn" onClick={handleFeedbackClose}>

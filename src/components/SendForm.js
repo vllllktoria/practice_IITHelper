@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import SentEvent from "./SentEvent";
 
 function SendForm() {
   const [showList, setShowList] = useState(false);
@@ -70,21 +71,41 @@ function SendForm() {
     setHasFeedback(event.target.checked);
   };
 
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getFullYear());
+  
+    return `${day}-${month}-${year}`;
+  };
+  
+  const formatTime = (date) => {
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+  
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
   const handleSubmit = () => {
+    const eventDate = sendNow ? new Date() : new Date(selectedDate + " " + selectedTime);
+  
     const eventData = {
       title: title,
       text: textInput,
       hasFeedback: hasFeedback ? true : false,
-      eventTime: sendNow ? new Date().toISOString() : selectedDate + "T" + selectedTime,
-      type: sendNow ? "INFO" : "EVENT",
-      repeatTime: selectedRepeat ? [new Date().toISOString()] : [],
+      eventTime: sendNow ? formatDate(eventDate) + " " + formatTime(eventDate) : selectedDate + " " + selectedTime,
       isGroupEvent: showList,
       isStudentEvent: showStudentList,
+      groups: showList ? [groups[0].id] : [],
+      students: showStudentList ? students.map((student) => student.id) : [],
+      type: sendNow ? "INFO" : "EVENT",
       isRepeat: selectedRepeat,
+      repeatTime: selectedRepeat ? [formatDate(new Date()) + " " + formatTime(new Date())] : [],
     };
   
     const jsonData = JSON.stringify(eventData);
-  
+
     axios
       .post("http://45.9.42.26:22001/api/event", jsonData, {
         headers: {
@@ -240,6 +261,7 @@ function SendForm() {
           </div>
         </div>
       </div>
+      <SentEvent />
     </div>
   );
 }
