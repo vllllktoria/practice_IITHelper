@@ -94,7 +94,7 @@ function SendForm() {
       title: title,
       text: textInput,
       hasFeedback: hasFeedback ? true : false,
-      eventTime: sendNow ? formatDate(eventDate) + " " + formatTime(eventDate) : selectedDate + " " + selectedTime,
+      eventTime: formatDate(eventDate) + " " + formatTime(eventDate),
       isGroupEvent: showList,
       isStudentEvent: showStudentList,
       groups: showList ? [groups[0].id] : [],
@@ -105,6 +105,8 @@ function SendForm() {
     };
   
     const jsonData = JSON.stringify(eventData);
+
+    console.log(jsonData)
 
     axios
       .post("http://45.9.42.26:22001/api/event", jsonData, {
