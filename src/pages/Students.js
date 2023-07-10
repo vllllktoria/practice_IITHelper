@@ -7,7 +7,9 @@ function Students() {
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
-    axios.get("http://45.9.42.26:22000/api/statement")
+    axios.get("http://45.9.42.26:22000/api/statement", {
+        withCredentials: true
+      })
       .then(response => {
         const statements = response.data;
         console.log(response.data)

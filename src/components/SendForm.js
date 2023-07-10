@@ -19,7 +19,9 @@ function SendForm() {
 
   useEffect(() => {
     const apiUrl = "http://45.9.42.26:22000/api/student";
-    axios.get(apiUrl).then((resp) => {
+    axios.get(apiUrl, {
+      withCredentials: true
+    }).then((resp) => {
       const student = resp.data;
       setStudents(student);
     });
@@ -27,11 +29,26 @@ function SendForm() {
 
   useEffect(() => {
     const apiUrl = "http://45.9.42.26:22000/api/group";
-    axios.get(apiUrl).then((resp) => {
+    axios.get(apiUrl, {
+      withCredentials: true
+    }).then((resp) => {
       const group = resp.data;
       setGroups(group);
     });
   }, []);
+
+  /* const resetForm = () => {
+    setShowList(false);
+    setShowStudentList(false);
+    setTextInput("");
+    setSelectedDate("");
+    setSelectedTime("");
+    setSelectedRepeat(false);
+    setSendNow(true);
+    setLaterSelected(false);
+    setTitle("");
+    setHasFeedback(false);
+  }; */
 
   const handleCheckboxChange = () => {
     setShowList(!showList);
@@ -89,6 +106,9 @@ function SendForm() {
 
   const handleSubmit = () => {
     const eventDate = sendNow ? new Date() : new Date(selectedDate + " " + selectedTime);
+
+    /* const options = { timeZone: "Asia/Yekaterinburg" };
+    const formattedEventDate = eventDate.toLocaleString("en-US", options); */
   
     const eventData = {
       title: title,
@@ -112,10 +132,12 @@ function SendForm() {
       .post("http://45.9.42.26:22001/api/event", jsonData, {
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        withCredentials: true
       })
       .then(response => {
-        console.log("Данные добавлены:", response.data);
+        console.log("Данные добавлены", response.data);
+       /*  resetForm() */
       })
       .catch(error => {
         console.error("Произошла ошибка", error);

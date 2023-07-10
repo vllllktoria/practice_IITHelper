@@ -2,12 +2,11 @@ import React, { useEffect } from 'react'
 import UseScript from '../components/UseScript'
 
 function Auth() {
-/* 
+
   UseScript('https://telegram.org/js/telegram-widget.js?22')
 
   function onTelegramAuth(user){
       alert(
-        'Logged in as ' +
           user.first_name +
           ' ' +
           user.last_name +
@@ -17,13 +16,13 @@ function Auth() {
           ')'
       )
     }
- */
+
     return (
-        <div></div>
-    ) /* => {  
+        
+    ) => {  
     
     onTelegramAuth()
-    }; */
+    };
 }
 
 export default Auth

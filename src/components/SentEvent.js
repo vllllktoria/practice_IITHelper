@@ -12,7 +12,9 @@ function SentEvent() {
     const fetchEvents = async () => {
       try {
         const apiUrl = "http://45.9.42.26:22001/api/event";
-        const response = await axios.get(apiUrl);
+        const response = await axios.get(apiUrl, {
+          withCredentials: true
+        });
         const events = response.data;
         setEvents(events);
       } catch (error) {
@@ -29,11 +31,15 @@ function SentEvent() {
 
     try {
       const gradeUrl = `http://45.9.42.26:22001/api/event/${eventId}/grade`;
-      const gradeResponse = await axios.get(gradeUrl);
+      const gradeResponse = await axios.get(gradeUrl, {
+        withCredentials: true
+      });
       const gradeData = gradeResponse.data;
 
       const feedbackUrl = `http://45.9.42.26:22001/api/event/${eventId}/feedback`;
-      const feedbackResponse = await axios.get(feedbackUrl);
+      const feedbackResponse = await axios.get(feedbackUrl, {
+        withCredentials: true
+      });
       const feedbackData = feedbackResponse.data;
 
       setGradeData(gradeData);
@@ -53,7 +59,7 @@ function SentEvent() {
 
   return (
     <div>
-      <h1>Отправленные события:</h1>
+      <h1>Отправленные уведомления:</h1>
       {events.map((event) => (
         <div className="sent-event" key={event.id}>
           <div className="sent-event-content">

@@ -31,7 +31,8 @@ function User({ user, handleEdit, statementId }) {
         {
           headers: {
             "Content-Type": "application/json"
-          }
+          },
+            withCredentials: true
         }
       )
       .then(response => {
@@ -58,8 +59,9 @@ function User({ user, handleEdit, statementId }) {
         {
           headers: {
             "Content-Type": "application/json"
+          },
+            withCredentials: true
           }
-        }
       )
       .then(response => {
         setRejected(true);
