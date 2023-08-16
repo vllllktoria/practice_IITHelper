@@ -4,3 +4,60 @@ h1{
     margin-left: 100px;
     font-weight: 350;
 }
+
+.schedule-form {
+    margin: 20px;
+  }
+
+  
+  .schedule {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+  }
+  
+  .params{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .editSch{
+    cursor: pointer;
+    background-color: #4F73EF;
+    border: 2px solid #355BDE;
+    border-radius: 6px;
+    padding: 5px;
+    color: white;
+    white-space: nowrap;
+  }
+
+  .editSch:hover{
+    background-color: #4664d1;
+  }
+
+  th,
+  td {
+    padding: 30px;
+    border: 1px solid #ccc;
+    width: 12%;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  .input-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  

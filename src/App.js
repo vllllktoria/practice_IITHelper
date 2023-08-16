@@ -10,6 +10,7 @@ import "./css/navbar.css";
 import "./css/events.css";
 import "./css/students.css";
 import "./css/auth.css";
+import "./css/schedule.css";
 
 function App() {
   //const [isAuthorized, setIsAuthorized] = useState(false);

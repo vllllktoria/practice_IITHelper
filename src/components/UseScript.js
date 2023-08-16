@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+/* import { useEffect } from 'react'
 
 const UseScript = url => {
   useEffect(() => {
@@ -20,4 +20,4 @@ const UseScript = url => {
   
 };
 
-export default UseScript
+export default UseScript */

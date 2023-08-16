@@ -20,7 +20,7 @@ function SendForm() {
   useEffect(() => {
     const apiUrl = "http://45.9.42.26:22000/api/student";
     axios.get(apiUrl, {
-      withCredentials: true
+      crossOrigin: true,
     }).then((resp) => {
       const student = resp.data;
       setStudents(student);
@@ -30,7 +30,7 @@ function SendForm() {
   useEffect(() => {
     const apiUrl = "http://45.9.42.26:22000/api/group";
     axios.get(apiUrl, {
-      withCredentials: true
+      crossOrigin: true,
     }).then((resp) => {
       const group = resp.data;
       setGroups(group);
