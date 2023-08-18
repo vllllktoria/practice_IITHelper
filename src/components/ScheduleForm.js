@@ -1,72 +1,132 @@
 import React, { useState } from "react";
+import Table from "./Table";
 
 function ScheduleForm() {
-  const [selectedGroup, setSelectedGroup] = useState(""); 
-  const [scheduleData, setScheduleData] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("");
+  
+  const [groups, setGroups] = useState(
+    ["ПрИ-101", "ПрИ-102"]
+    );
+  const [newGroupInput, setNewGroupInput] = useState("");
+  const [editedSchedule, setEditedSchedule] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [isAddingGroup, setIsAddingGroup] = useState(false);  
 
-  const daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+  const scheduleData = {
+    "ПрИ-101": [
+      { monday: "", tuesday: "", wednesday: "", thursday: "", friday: "", saturday: "" },
+      { monday: "", tuesday: "", wednesday: "", thursday: "", friday: "", saturday: "" },
+      { monday: "", tuesday: "", wednesday: "", thursday: "", friday: "", saturday: "" }
+    ],
+    "ПрИ-102": [
+      { monday: "", tuesday: "", wednesday: "", thursday: "", friday: "", saturday: "" },
+    ],
+  };
+
+  const columns = [
+    {
+      Header: 'Понедельник',
+      accessor: 'monday'
+    },
+    {
+      Header: 'Вторник',
+      accessor: 'tuesday'
+    },
+    {
+      Header: 'Среда',
+      accessor: 'wednesday'
+    },
+    {
+      Header: 'Четверг',
+      accessor: 'thursday'
+    },
+    {
+      Header: 'Пятница',
+      accessor: 'friday'
+    },
+    {
+      Header: 'Суббота',
+      accessor: 'saturday'
+    }
+  ];
 
   const handleGroupChange = (event) => {
     const group = event.target.value;
     setSelectedGroup(group);
-    const emptyDay = Array(6).fill({ subject: "", time: "" });
-    const scheduleData = {
-      "ПрИ-101": [
-        emptyDay,
-        emptyDay,
-        emptyDay,
-        emptyDay,
-        emptyDay,
-        
-      ],
-      "ПрИ-102": [
-        emptyDay,
-        emptyDay,
-        emptyDay,
-        emptyDay,
-        emptyDay,
-      ],
-    };
+    setIsEditing(false);
+  };
+  
 
-    setScheduleData(scheduleData[group] || []);
+  const handleAddButtonClick = () => {
+    if (newGroupInput && !groups.includes(newGroupInput)) {
+      setGroups([...groups, newGroupInput]);
+      setNewGroupInput("");
+    }
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveChangesClick = () => {
+    scheduleData[selectedGroup] = editedSchedule[selectedGroup];
+    setEditedSchedule({});
+    setIsEditing(false);
+  };
+
+  const data = selectedGroup ? scheduleData[selectedGroup] || [] : [];
+
+
   return (
-  <div className="schedule-form">
-    <div className="params">
-    <select onChange={handleGroupChange} value={selectedGroup}>
-      <option value="">Выберите группу</option>
-      <option value="ПрИ-101">ПрИ-101</option>
-      <option value="ПрИ-102">ПрИ-102</option>
-    </select>
-    
-    <button className="editSch">Изменить расписание</button>
-  </div>
-  
-  <div className="schedule-table">
-    <table>
-      <thead>
-        <tr>
-          {daysOfWeek.map((day) => (
-            <th key={day}>{day}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {scheduleData.map((daySchedule, index) => (
-          <tr key={index}>
-            {daySchedule.map((item, innerIndex) => (
-              <td key={innerIndex}>
-                <div>{item.subject}</div>
-                <div>{item.time}</div>
-              </td>
+    <div className="schedule-form">
+      <div className="params">
+        <form name="myForm">
+          <select onChange={handleGroupChange} value={selectedGroup}>
+            <option value="">Выберите группу</option>
+            {groups.map((group) => (
+              <option key={group} value={group}>
+                {group}
+              </option>
             ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
+          </select>
+        </form>
+
+        <p>
+        <input
+            type="text"
+            name="textInput"
+            placeholder="Группа"
+            value={newGroupInput}
+            onChange={(event) => setNewGroupInput(event.target.value)}
+          />
+        </p>
+        <p>
+          <input
+            type="button"
+            name="addButton"
+            value="Добавить"
+            onClick={handleAddButtonClick}
+          />
+        </p>
+
+        {isEditing ? (
+          <button className="editSch" onClick={handleSaveChangesClick}>Сохранить изменения</button>
+        ) : (
+          <button className="editSch" onClick={handleEditClick}>Изменить расписание</button>
+        )}
+
+      </div>
+      {selectedGroup && (
+        <div className="table">
+          <Table 
+          columns={columns}
+          data={data}
+          isEditing={isEditing}
+          editedSchedule={editedSchedule}
+          setEditedSchedule={setEditedSchedule}/>
+        </div>
+      )}
+    </div>
   );
 }
 
