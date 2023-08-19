@@ -59,5 +59,12 @@ h1{
     align-items: center;
     margin-bottom: 5px;
   }
+
+  .edit{
+    margin: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
   
   

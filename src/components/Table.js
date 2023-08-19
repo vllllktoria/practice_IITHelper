@@ -12,17 +12,21 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
     columns,
     data
   });
+  
 
   const handleCellChange = (event, row, column) => {
     const { value } = event.target;
     const groupName = row.original.group;
-
+  
     const updatedEditedSchedule = { ...editedSchedule };
     if (!updatedEditedSchedule[groupName]) {
       updatedEditedSchedule[groupName] = [...data];
     }
-    updatedEditedSchedule[groupName][row.index][column] = value;
-
+    const rowValues = updatedEditedSchedule[groupName][row.index] || {};
+    rowValues[column] = value;
+  
+    updatedEditedSchedule[groupName][row.index] = rowValues;
+  
     setEditedSchedule(updatedEditedSchedule);
   };
 
@@ -42,23 +46,23 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()} className="custom-row">
-              {row.cells.map(cell => (
-                <td {...cell.getCellProps()} className="custom-cell">
-                  <div>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        name={cell.column.id}
-                        value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
-                        onChange={(event) => handleCellChange(event, row, cell.column.id)}
-                      />
-                    ) : (
-                      cell.render('Cell')
-                    )}
+          {rows.map(row => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()} className="custom-row">
+                {row.cells.map(cell => (
+                  <td {...cell.getCellProps()} className="custom-cell">
+                    <div>
+                      {isEditing ? (
+                        <input
+                          type="text"
+                          name={cell.column.id}
+                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
+                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
+                        />
+                      ) : (
+                        cell.render('Cell')
+                          )}  
                   </div>
                 </td>
               ))}

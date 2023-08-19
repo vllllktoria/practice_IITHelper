@@ -7,21 +7,17 @@ function ScheduleForm() {
   const [groups, setGroups] = useState(
     ["ПрИ-101", "ПрИ-102"]
     );
+    
   const [newGroupInput, setNewGroupInput] = useState("");
   const [editedSchedule, setEditedSchedule] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [isAddingGroup, setIsAddingGroup] = useState(false);  
+  const [isAddingPair, setIsAddingPair] = useState(false);
+  const [addedRows, setAddedRows] = useState([]);
 
-  const scheduleData = {
-    "ПрИ-101": [
-      { monday: "", tuesday: "", wednesday: "", thursday: "", friday: "", saturday: "" },
-      { monday: "", tuesday: "", wednesday: "", thursday: "", friday: "", saturday: "" },
-      { monday: "", tuesday: "", wednesday: "", thursday: "", friday: "", saturday: "" }
-    ],
-    "ПрИ-102": [
-      { monday: "", tuesday: "", wednesday: "", thursday: "", friday: "", saturday: "" },
-    ],
-  };
+  const [scheduleData, setScheduleData] = useState({
+    "ПрИ-101": [],
+    "ПрИ-102": []
+  });
 
   const columns = [
     {
@@ -57,6 +53,30 @@ function ScheduleForm() {
   };
   
 
+  const handleAddPairClick = () => {
+    const newScheduleData = { ...scheduleData };
+    
+    if (!newScheduleData[selectedGroup]) {
+      newScheduleData[selectedGroup] = [];
+    }
+    
+    newScheduleData[selectedGroup].push({});
+    setScheduleData(newScheduleData);
+    setIsAddingPair(true);
+  };
+  
+  const handleCancelAddPairClick = () => {
+    const newScheduleData = { ...scheduleData };
+    
+    if (newScheduleData[selectedGroup]) {
+      newScheduleData[selectedGroup].pop();
+    }
+    
+    setScheduleData(newScheduleData);
+    setIsAddingPair(false);
+  };
+  
+
   const handleAddButtonClick = () => {
     if (newGroupInput && !groups.includes(newGroupInput)) {
       setGroups([...groups, newGroupInput]);
@@ -69,12 +89,19 @@ function ScheduleForm() {
   };
 
   const handleSaveChangesClick = () => {
-    scheduleData[selectedGroup] = editedSchedule[selectedGroup];
+    const newScheduleData = { ...scheduleData };
+  
+    if (editedSchedule[selectedGroup]) {
+      newScheduleData[selectedGroup] = editedSchedule[selectedGroup];
+    }
+  
+    setScheduleData(newScheduleData);
     setEditedSchedule({});
     setIsEditing(false);
   };
 
   const data = selectedGroup ? scheduleData[selectedGroup] || [] : [];
+
 
 
   return (
@@ -102,18 +129,35 @@ function ScheduleForm() {
         </p>
         <p>
           <input
+          className="editSch"
             type="button"
             name="addButton"
-            value="Добавить"
+            value="Добавить группу"
             onClick={handleAddButtonClick}
           />
         </p>
 
         {isEditing ? (
-          <button className="editSch" onClick={handleSaveChangesClick}>Сохранить изменения</button>
+        <div>
+        <button className="editSch" onClick={handleSaveChangesClick}>
+          Сохранить изменения
+        </button>
+        {!isAddingPair ? (
+          <button className="editSch" onClick={handleAddPairClick}>
+            Добавить пару
+          </button>
         ) : (
-          <button className="editSch" onClick={handleEditClick}>Изменить расписание</button>
+          <button className="editSch" onClick={handleCancelAddPairClick}>
+            Отмена
+          </button>
         )}
+      </div>
+    ) : (
+      <button className="editSch" onClick={handleEditClick}>
+        Изменить расписание
+      </button>
+    )}
+
 
       </div>
       {selectedGroup && (
@@ -126,6 +170,7 @@ function ScheduleForm() {
           setEditedSchedule={setEditedSchedule}/>
         </div>
       )}
+      
     </div>
   );
 }
