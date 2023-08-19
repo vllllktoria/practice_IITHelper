@@ -55,27 +55,23 @@ function ScheduleForm() {
 
   const handleAddPairClick = () => {
     const newScheduleData = { ...scheduleData };
-    
+  
     if (!newScheduleData[selectedGroup]) {
       newScheduleData[selectedGroup] = [];
     }
-    
+  
     newScheduleData[selectedGroup].push({});
     setScheduleData(newScheduleData);
-    setIsAddingPair(true);
   };
   
   const handleCancelAddPairClick = () => {
     const newScheduleData = { ...scheduleData };
-    
+  
     if (newScheduleData[selectedGroup]) {
       newScheduleData[selectedGroup].pop();
+      setScheduleData(newScheduleData);
     }
-    
-    setScheduleData(newScheduleData);
-    setIsAddingPair(false);
   };
-  
 
   const handleAddButtonClick = () => {
     if (newGroupInput && !groups.includes(newGroupInput)) {
@@ -137,25 +133,23 @@ function ScheduleForm() {
           />
         </p>
 
-        {isEditing ? (
+        {isEditing && (
         <div>
-        <button className="editSch" onClick={handleSaveChangesClick}>
-          Сохранить изменения
-        </button>
-        {!isAddingPair ? (
+          <button className="editSch" onClick={handleSaveChangesClick}>
+            Сохранить изменения
+          </button>
           <button className="editSch" onClick={handleAddPairClick}>
             Добавить пару
           </button>
-        ) : (
           <button className="editSch" onClick={handleCancelAddPairClick}>
-            Отмена
+            Удалить
           </button>
-        )}
-      </div>
-    ) : (
-      <button className="editSch" onClick={handleEditClick}>
-        Изменить расписание
-      </button>
+        </div>
+      )}
+      {!isEditing && (
+        <button className="editSch" onClick={handleEditClick}>
+          Изменить расписание
+        </button>
     )}
 
 
@@ -168,6 +162,7 @@ function ScheduleForm() {
           isEditing={isEditing}
           editedSchedule={editedSchedule}
           setEditedSchedule={setEditedSchedule}/>
+
         </div>
       )}
       
