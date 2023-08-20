@@ -14,6 +14,8 @@ function ScheduleForm() {
   /* const [isAddingPair, setIsAddingPair] = useState(false);
   const [addedRows, setAddedRows] = useState([]); */
   const [selectedWeek, setSelectedWeek] = useState({});
+  const [isNewGroup, setIsNewGroup] = useState({})
+  
 
   const [scheduleData, setScheduleData] = useState({
     "ПрИ-101": [],
@@ -63,7 +65,8 @@ function ScheduleForm() {
   const handleAddPairClick = () => {
     const newScheduleData = { ...scheduleData };
   
-    if (!newScheduleData[selectedGroup][selectedWeek]) {
+    if (!newScheduleData[selectedGroup]?.[selectedWeek]) {
+      newScheduleData[selectedGroup] = {};
       newScheduleData[selectedGroup][selectedWeek] = [];
     }
   
@@ -105,7 +108,7 @@ function ScheduleForm() {
 
   const data =
   selectedGroup && selectedWeek
-    ? scheduleData[selectedGroup][selectedWeek] || []
+    ? scheduleData[selectedGroup]?.[selectedWeek] || []
     : [];
 
   return (

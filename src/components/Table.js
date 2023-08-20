@@ -28,6 +28,9 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
     updatedEditedSchedule[groupName][row.index] = rowValues;
   
     setEditedSchedule(updatedEditedSchedule);
+
+    console.log(row.original.group)
+    console.log(row.index)
   };
 
   return (
