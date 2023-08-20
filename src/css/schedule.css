@@ -24,8 +24,9 @@ h1{
   
   .params{
     display: flex;
+    gap: 50px;
+    justify-content: center;
     align-items: center;
-    justify-content: space-evenly;
   }
   
   .editSch{
@@ -66,5 +67,17 @@ h1{
     align-items: center;
     justify-content: space-evenly;
   }
-  
+
+  .add-pair {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+  }
+
+  .chooseWeek{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   

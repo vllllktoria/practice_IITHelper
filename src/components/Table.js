@@ -55,6 +55,7 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
                     <div>
                       {isEditing ? (
                         <input
+                          placeholder="Время"
                           type="text"
                           name={cell.column.id}
                           value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}

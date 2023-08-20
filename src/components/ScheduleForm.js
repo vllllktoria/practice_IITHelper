@@ -11,8 +11,9 @@ function ScheduleForm() {
   const [newGroupInput, setNewGroupInput] = useState("");
   const [editedSchedule, setEditedSchedule] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [isAddingPair, setIsAddingPair] = useState(false);
-  const [addedRows, setAddedRows] = useState([]);
+  /* const [isAddingPair, setIsAddingPair] = useState(false);
+  const [addedRows, setAddedRows] = useState([]); */
+  const [selectedWeek, setSelectedWeek] = useState({});
 
   const [scheduleData, setScheduleData] = useState({
     "ПрИ-101": [],
@@ -51,24 +52,30 @@ function ScheduleForm() {
     setSelectedGroup(group);
     setIsEditing(false);
   };
+
+  const handleWeekChange = (event) => {
+    const week = event.target.value;
+    setSelectedWeek(week);
+    setIsEditing(false);
+  };
   
 
   const handleAddPairClick = () => {
     const newScheduleData = { ...scheduleData };
   
-    if (!newScheduleData[selectedGroup]) {
-      newScheduleData[selectedGroup] = [];
+    if (!newScheduleData[selectedGroup][selectedWeek]) {
+      newScheduleData[selectedGroup][selectedWeek] = [];
     }
   
-    newScheduleData[selectedGroup].push({});
+    newScheduleData[selectedGroup][selectedWeek].push({});
     setScheduleData(newScheduleData);
   };
   
   const handleCancelAddPairClick = () => {
     const newScheduleData = { ...scheduleData };
   
-    if (newScheduleData[selectedGroup]) {
-      newScheduleData[selectedGroup].pop();
+    if (newScheduleData[selectedGroup][selectedWeek]) {
+      newScheduleData[selectedGroup][selectedWeek].pop();
       setScheduleData(newScheduleData);
     }
   };
@@ -96,9 +103,10 @@ function ScheduleForm() {
     setIsEditing(false);
   };
 
-  const data = selectedGroup ? scheduleData[selectedGroup] || [] : [];
-
-
+  const data =
+  selectedGroup && selectedWeek
+    ? scheduleData[selectedGroup][selectedWeek] || []
+    : [];
 
   return (
     <div className="schedule-form">
@@ -133,27 +141,26 @@ function ScheduleForm() {
           />
         </p>
 
-        {isEditing && (
+        {isEditing ? (
         <div>
           <button className="editSch" onClick={handleSaveChangesClick}>
             Сохранить изменения
           </button>
-          <button className="editSch" onClick={handleAddPairClick}>
-            Добавить пару
-          </button>
-          <button className="editSch" onClick={handleCancelAddPairClick}>
-            Удалить
-          </button>
         </div>
-      )}
-      {!isEditing && (
+        ) : (
         <button className="editSch" onClick={handleEditClick}>
           Изменить расписание
         </button>
-    )}
-
-
+        )}
       </div>
+          
+      <div className="chooseWeek">
+      <select onChange={handleWeekChange} value={selectedWeek}>
+        <option value="Первая неделя">Первая неделя</option>
+        <option value="Вторая неделя">Вторая неделя</option>
+        </select>
+      </div>
+
       {selectedGroup && (
         <div className="table">
           <Table 
@@ -163,6 +170,16 @@ function ScheduleForm() {
           editedSchedule={editedSchedule}
           setEditedSchedule={setEditedSchedule}/>
 
+      {isEditing && (
+          <div className="add-pair">
+            <button className="editSch" onClick={handleAddPairClick}>
+              Добавить пару
+            </button>
+            <button className="editSch" onClick={handleCancelAddPairClick}>
+              Удалить
+            </button>
+          </div>
+        )}
         </div>
       )}
       
