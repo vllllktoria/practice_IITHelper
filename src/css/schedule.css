@@ -97,7 +97,16 @@ h1{
     justify-content: center;
     gap: 50px;
     margin-top: 10px;
-    flex-direction: row-reverse;
+    flex-direction: column-reverse;
     align-items: center;
   }
+
+.warning{
+  color: rgb(209, 0, 0);
+  font-size: 14px;
+}
+
   
+/* .error {
+  border-color: rgb(173, 8, 8);
+} */

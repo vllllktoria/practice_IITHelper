@@ -4,7 +4,9 @@ import Table from "./Table";
 function ScheduleForm() {
   const [selectedGroup, setSelectedGroup] = useState("");
   
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState(
+    ["ПрИ-101", "ПрИ-102"]
+    );
     
   const [newGroupInput, setNewGroupInput] = useState("");
   const [editedSchedule, setEditedSchedule] = useState({});
@@ -13,11 +15,17 @@ function ScheduleForm() {
   const [selectedDate, setSelectedDate] = useState("");
   const [isNewGroupAdded, setIsNewGroupAdded] = useState(false);
   const [newlyAddedGroup, setNewlyAddedGroup] = useState("");
-  const [showAddScheduleButton, setShowAddScheduleButton] = useState(false);
+  //const [showAddScheduleButton, setShowAddScheduleButton] = useState(false);
   const [isTableVisible, setIsTableVisible] = useState(false);
+  const [scheduleWarning, setScheduleWarning] = useState("")
+  const [scheduleButtonClicked, setScheduleButtonClicked] = useState(false);
 
 
-  const [scheduleData, setScheduleData] = useState({});
+
+  const [scheduleData, setScheduleData] = useState({
+    "ПрИ-101": [],
+    "ПрИ-102": []
+  });
 
   const columns = [
     {
@@ -85,10 +93,9 @@ function ScheduleForm() {
       setGroups([...groups, newGroupInput]);
       setNewGroupInput("");
       setNewlyAddedGroup(newGroupInput); 
-      setShowAddScheduleButton(true); 
+      setIsNewGroupAdded(true);
     }
   };
-  
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -107,9 +114,13 @@ function ScheduleForm() {
   };
 
   const handleAddScheduleClick = () => {
-    const newScheduleData = { ...scheduleData };
-    setIsNewGroupAdded(false);
-    setIsTableVisible(true); 
+    if (selectedDate) {
+      setIsNewGroupAdded(false);
+      setIsTableVisible(true);
+      setScheduleWarning("");
+    } else {
+      setScheduleWarning("Дата не выбрана");
+    }
   };
 
   const handleDateChange = (date) => {
@@ -142,14 +153,14 @@ function ScheduleForm() {
             ))}
           </select>
         </form>
-        
-      <select onChange={handleWeekChange} value={selectedWeek}>
-        <option value="Первая неделя">Первая неделя</option>
-        <option value="Вторая неделя">Вторая неделя</option>
-        </select> 
+
+        <select onChange={handleWeekChange} value={selectedWeek}>
+          <option value="Первая неделя">Первая неделя</option>
+          <option value="Вторая неделя">Вторая неделя</option>
+        </select>
 
         <p>
-        <input
+          <input
             type="text"
             name="textInput"
             placeholder="Группа"
@@ -159,7 +170,7 @@ function ScheduleForm() {
         </p>
         <p>
           <input
-          className="editSch"
+            className="editSch"
             type="button"
             name="addButton"
             value="Добавить группу"
@@ -168,19 +179,21 @@ function ScheduleForm() {
         </p>
 
         {isEditing ? (
-        <div>
-          <button className="editSch" onClick={handleSaveChangesClick}>
-            Сохранить изменения
-          </button>
-        </div>
+          <div>
+            <button className="editSch" onClick={handleSaveChangesClick}>
+              Сохранить изменения
+            </button>
+          </div>
         ) : (
-        <button className="editSch" onClick={handleEditClick}>
-          Изменить расписание
-        </button>
+          <button className="editSch" onClick={handleEditClick}>
+            Изменить расписание
+          </button>
         )}
       </div>
 
-      {showAddScheduleButton && selectedGroup === newlyAddedGroup && (
+      {selectedGroup && (
+        <div className="table">
+          {isNewGroupAdded && selectedGroup === newlyAddedGroup ? (
             <div className="add-schedule">
               <button className="editSch" onClick={handleAddScheduleClick}>
                 Добавить расписание
@@ -189,30 +202,30 @@ function ScheduleForm() {
                 <h3 className="semestr">Выберите дату начала семестра:</h3>
                 <label className="date">
                   <input
+                    className={selectedDate ? "" : "error"}
                     type="date"
                     value={selectedDate}
                     onChange={handleDateChange}
                   />
                 </label>
+                <p className="warning">{scheduleWarning}</p>
+              </div>
             </div>
-          </div>
-        )}
-
-    {isTableVisible && (
-      <div className="table">
-        <Table {...tableProps} />
-
-      {isEditing && (
-          <div className="add-pair">
-            <button className="editSch" onClick={handleAddPairClick}>
-              Добавить пару
-            </button>
-            <button className="editSch" onClick={handleCancelAddPairClick}>
-              Удалить
-            </button>
-          </div>
-        )}
-
+          ) : (
+            <>
+              <Table {...tableProps} />
+              {isEditing && (
+                <div className="add-pair">
+                  <button className="editSch" onClick={handleAddPairClick}>
+                    Добавить пару
+                  </button>
+                  <button className="editSch" onClick={handleCancelAddPairClick}>
+                    Удалить
+                  </button>
+                </div>
+              )}
+            </>
+          )}
         </div>
       )}
     </div>
