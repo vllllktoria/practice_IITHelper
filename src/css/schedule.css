@@ -80,4 +80,24 @@ h1{
     justify-content: center;
     align-items: center;
   }
+
+ .semestr{
+    font-weight: 400;
+    font-size: 15px;
+  }
+
+  .chooseDate{
+    display: flex;  
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .add-schedule{
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 10px;
+    flex-direction: row-reverse;
+    align-items: center;
+  }
   

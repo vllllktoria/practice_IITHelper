@@ -13,25 +13,26 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
     data
   });
   
-
-  const handleCellChange = (event, row, column) => {
+  const handleCellChange = (event, groupName, rowIndex, columnId) => {
     const { value } = event.target;
-    const groupName = row.original.group;
-  
     const updatedEditedSchedule = { ...editedSchedule };
     if (!updatedEditedSchedule[groupName]) {
       updatedEditedSchedule[groupName] = [...data];
     }
-    const rowValues = updatedEditedSchedule[groupName][row.index] || {};
-    rowValues[column] = value;
-  
-    updatedEditedSchedule[groupName][row.index] = rowValues;
-  
+    const rowValues = updatedEditedSchedule[groupName][rowIndex] || {};
+    rowValues[columnId] = value;
+    updatedEditedSchedule[groupName][rowIndex] = rowValues;
     setEditedSchedule(updatedEditedSchedule);
-
-    console.log(row.original.group)
-    console.log(row.index)
   };
+
+  const renderInput = (groupName, rowIndex, columnId, cellValue) => (
+    <input
+      type="text"
+      name={columnId}
+      value={editedSchedule[groupName]?.[rowIndex]?.[columnId] || cellValue}
+      onChange={(event) => handleCellChange(event, groupName, rowIndex, columnId)}
+    />
+  );
 
   return (
     <table {...getTableProps()} className="table">
@@ -57,13 +58,43 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
                   <td {...cell.getCellProps()} className="custom-cell">
                     <div>
                       {isEditing ? (
+                        <>
                         <input
-                          placeholder="Время"
+                          placeholder="Время начала"
                           type="text"
                           name={cell.column.id}
                           value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
                           onChange={(event) => handleCellChange(event, row, cell.column.id)}
                         />
+                        <input
+                          placeholder="Время окончания"
+                          type="text"
+                          name={cell.column.id}
+                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
+                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
+                        />
+                        <input
+                          placeholder="Предмет"
+                          type="text"
+                          name={cell.column.id}
+                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
+                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
+                        />
+                        <input
+                          placeholder="Преподаватель"
+                          type="text"
+                          name={cell.column.id}
+                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
+                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
+                        />
+                        <input
+                          placeholder="Аудитория"
+                          type="text"
+                          name={cell.column.id}
+                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
+                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
+                        />
+                        </>
                       ) : (
                         cell.render('Cell')
                           )}  

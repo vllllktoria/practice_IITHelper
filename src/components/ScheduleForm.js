@@ -4,23 +4,20 @@ import Table from "./Table";
 function ScheduleForm() {
   const [selectedGroup, setSelectedGroup] = useState("");
   
-  const [groups, setGroups] = useState(
-    ["ПрИ-101", "ПрИ-102"]
-    );
+  const [groups, setGroups] = useState([]);
     
   const [newGroupInput, setNewGroupInput] = useState("");
   const [editedSchedule, setEditedSchedule] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  /* const [isAddingPair, setIsAddingPair] = useState(false);
-  const [addedRows, setAddedRows] = useState([]); */
   const [selectedWeek, setSelectedWeek] = useState({});
-  const [isNewGroup, setIsNewGroup] = useState({})
-  
+  const [selectedDate, setSelectedDate] = useState("");
+  const [isNewGroupAdded, setIsNewGroupAdded] = useState(false);
+  const [newlyAddedGroup, setNewlyAddedGroup] = useState("");
+  const [showAddScheduleButton, setShowAddScheduleButton] = useState(false);
+  const [isTableVisible, setIsTableVisible] = useState(false);
 
-  const [scheduleData, setScheduleData] = useState({
-    "ПрИ-101": [],
-    "ПрИ-102": []
-  });
+
+  const [scheduleData, setScheduleData] = useState({});
 
   const columns = [
     {
@@ -87,8 +84,11 @@ function ScheduleForm() {
     if (newGroupInput && !groups.includes(newGroupInput)) {
       setGroups([...groups, newGroupInput]);
       setNewGroupInput("");
+      setNewlyAddedGroup(newGroupInput); 
+      setShowAddScheduleButton(true); 
     }
   };
+  
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -106,10 +106,28 @@ function ScheduleForm() {
     setIsEditing(false);
   };
 
+  const handleAddScheduleClick = () => {
+    const newScheduleData = { ...scheduleData };
+    setIsNewGroupAdded(false);
+    setIsTableVisible(true); 
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date.target.value);
+  };
+
   const data =
   selectedGroup && selectedWeek
     ? scheduleData[selectedGroup]?.[selectedWeek] || []
     : [];
+
+    const tableProps = {
+      columns: columns,
+      data: data,
+      isEditing: isEditing,
+      editedSchedule: editedSchedule,
+      setEditedSchedule: {setEditedSchedule}
+    };
 
   return (
     <div className="schedule-form">
@@ -124,6 +142,11 @@ function ScheduleForm() {
             ))}
           </select>
         </form>
+        
+      <select onChange={handleWeekChange} value={selectedWeek}>
+        <option value="Первая неделя">Первая неделя</option>
+        <option value="Вторая неделя">Вторая неделя</option>
+        </select> 
 
         <p>
         <input
@@ -156,22 +179,28 @@ function ScheduleForm() {
         </button>
         )}
       </div>
-          
-      <div className="chooseWeek">
-      <select onChange={handleWeekChange} value={selectedWeek}>
-        <option value="Первая неделя">Первая неделя</option>
-        <option value="Вторая неделя">Вторая неделя</option>
-        </select>
-      </div>
 
-      {selectedGroup && (
-        <div className="table">
-          <Table 
-          columns={columns}
-          data={data}
-          isEditing={isEditing}
-          editedSchedule={editedSchedule}
-          setEditedSchedule={setEditedSchedule}/>
+      {showAddScheduleButton && selectedGroup === newlyAddedGroup && (
+            <div className="add-schedule">
+              <button className="editSch" onClick={handleAddScheduleClick}>
+                Добавить расписание
+              </button>
+              <div className="chooseDate">
+                <h3 className="semestr">Выберите дату начала семестра:</h3>
+                <label className="date">
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                  />
+                </label>
+            </div>
+          </div>
+        )}
+
+    {isTableVisible && (
+      <div className="table">
+        <Table {...tableProps} />
 
       {isEditing && (
           <div className="add-pair">
@@ -183,9 +212,9 @@ function ScheduleForm() {
             </button>
           </div>
         )}
+
         </div>
       )}
-      
     </div>
   );
 }
