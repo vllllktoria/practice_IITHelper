@@ -25,14 +25,17 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
     setEditedSchedule(updatedEditedSchedule);
   };
 
-  const renderInput = (groupName, rowIndex, columnId, cellValue) => (
-    <input
-      type="text"
-      name={columnId}
-      value={editedSchedule[groupName]?.[rowIndex]?.[columnId] || cellValue}
-      onChange={(event) => handleCellChange(event, groupName, rowIndex, columnId)}
-    />
-  );
+  const renderInputCell = (row, cell, placeholder) => {
+    return (
+      <input
+        placeholder={placeholder}
+        type="text"
+        name={cell.column.id}
+        value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
+        onChange={(event) => handleCellChange(event, row.original.group, row.index, cell.column.id)}
+      />
+    );
+  }
 
   return (
     <table {...getTableProps()} className="table">
@@ -56,48 +59,18 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
               <tr {...row.getRowProps()} className="custom-row">
                 {row.cells.map(cell => (
                   <td {...cell.getCellProps()} className="custom-cell">
-                    <div>
-                      {isEditing ? (
-                        <>
-                        <input
-                          placeholder="Время начала"
-                          type="text"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
-                        />
-                        <input
-                          placeholder="Время окончания"
-                          type="text"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
-                        />
-                        <input
-                          placeholder="Предмет"
-                          type="text"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
-                        />
-                        <input
-                          placeholder="Преподаватель"
-                          type="text"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
-                        />
-                        <input
-                          placeholder="Аудитория"
-                          type="text"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row, cell.column.id)}
-                        />
-                        </>
-                      ) : (
-                        cell.render('Cell')
-                          )}  
+                  <div>
+                    {isEditing ? (
+                      <>
+                        {renderInputCell(row, cell, "Время начала")}
+                        {renderInputCell(row, cell, "Время окончания")}
+                        {renderInputCell(row, cell, "Предмет")}
+                        {renderInputCell(row, cell, "Преподаватель")}
+                        {renderInputCell(row, cell, "Аудитория")}
+                      </>
+                    ) : (
+                      cell.render('Cell')
+                    )}
                   </div>
                 </td>
               ))}

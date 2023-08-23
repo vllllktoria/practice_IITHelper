@@ -15,10 +15,9 @@ function ScheduleForm() {
   const [selectedDate, setSelectedDate] = useState("");
   const [isNewGroupAdded, setIsNewGroupAdded] = useState(false);
   const [newlyAddedGroup, setNewlyAddedGroup] = useState("");
-  //const [showAddScheduleButton, setShowAddScheduleButton] = useState(false);
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [scheduleWarning, setScheduleWarning] = useState("")
-  const [scheduleButtonClicked, setScheduleButtonClicked] = useState(false);
+  const [groupWarning, setGroupWarning] = useState("")
 
 
 
@@ -98,7 +97,11 @@ function ScheduleForm() {
   };
 
   const handleEditClick = () => {
-    setIsEditing(true);
+    if (selectedGroup) {
+      setIsEditing(true)}
+    else {
+      setGroupWarning("Выберите группу")
+    }
   };
 
   const handleSaveChangesClick = () => {
@@ -126,19 +129,11 @@ function ScheduleForm() {
   const handleDateChange = (date) => {
     setSelectedDate(date.target.value);
   };
-
+  
   const data =
   selectedGroup && selectedWeek
     ? scheduleData[selectedGroup]?.[selectedWeek] || []
     : [];
-
-    const tableProps = {
-      columns: columns,
-      data: data,
-      isEditing: isEditing,
-      editedSchedule: editedSchedule,
-      setEditedSchedule: {setEditedSchedule}
-    };
 
   return (
     <div className="schedule-form">
@@ -213,7 +208,12 @@ function ScheduleForm() {
             </div>
           ) : (
             <>
-              <Table {...tableProps} />
+              <Table 
+                columns={columns} 
+                data={data} 
+                isEditing={isEditing} 
+                editedSchedule={editedSchedule} 
+                setEditedSchedule={setEditedSchedule} />
               {isEditing && (
                 <div className="add-pair">
                   <button className="editSch" onClick={handleAddPairClick}>
