@@ -51,7 +51,9 @@ h1{
   }
   
   th {
-    background-color: #f2f2f2;
+    background-color: #f4f4f4;
+    font-weight: 450;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
   }
   
   .input-row {
@@ -109,4 +111,32 @@ h1{
   
 /* .error {
   border-color: rgb(173, 8, 8);
+} */
+
+.save-btn{
+    cursor: pointer;
+    background-color: #35bc16;
+    border: 2px solid #2f9119;
+    border-radius: 6px;
+    padding: 5px;
+    color: white;
+    white-space: nowrap;
+}
+
+.save-btn:hover{
+  background-color: #2fa515;
+}
+
+/* .delete-btn{
+    cursor: pointer;
+    background-color: #d21919;
+    border: 2px solid #b81f1f;
+    border-radius: 6px;
+    padding: 5px;
+    color: white;
+    white-space: nowrap;
+}
+
+.delete-btn:hover{
+  background-color: #b71919;
 } */

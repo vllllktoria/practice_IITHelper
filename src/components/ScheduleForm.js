@@ -18,6 +18,7 @@ function ScheduleForm() {
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [scheduleWarning, setScheduleWarning] = useState("")
   const [groupWarning, setGroupWarning] = useState("")
+  const [active, setActive] = useState(false);
 
 
 
@@ -102,6 +103,7 @@ function ScheduleForm() {
     else {
       setGroupWarning("Выберите группу")
     }
+    setActive(false);
   };
 
   const handleSaveChangesClick = () => {
@@ -114,6 +116,7 @@ function ScheduleForm() {
     setScheduleData(newScheduleData);
     setEditedSchedule({});
     setIsEditing(false);
+    setActive(!active);
   };
 
   const handleAddScheduleClick = () => {
@@ -175,7 +178,9 @@ function ScheduleForm() {
 
         {isEditing ? (
           <div>
-            <button className="editSch" onClick={handleSaveChangesClick}>
+            <button 
+            onClick={handleSaveChangesClick}
+            className={active ? "editSch" : "save-btn"} >
               Сохранить изменения
             </button>
           </div>
