@@ -13,15 +13,15 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
     data
   });
   
-  const handleCellChange = (event, groupName, rowIndex, columnId) => {
+  const handleCellChange = (event, title, rowIndex, columnId) => {
     const { value } = event.target;
     const updatedEditedSchedule = { ...editedSchedule };
-    if (!updatedEditedSchedule[groupName]) {
-      updatedEditedSchedule[groupName] = [...data];
+    if (!updatedEditedSchedule[title]) {
+      updatedEditedSchedule[title] = [...data];
     }
-    const rowValues = updatedEditedSchedule[groupName][rowIndex] || {};
+    const rowValues = updatedEditedSchedule[title][rowIndex] || {};
     rowValues[columnId] = value;
-    updatedEditedSchedule[groupName][rowIndex] = rowValues;
+    updatedEditedSchedule[title][rowIndex] = rowValues;
     setEditedSchedule(updatedEditedSchedule);
   };
 
@@ -31,8 +31,8 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
         placeholder={placeholder}
         type="text"
         name={cell.column.id}
-        value={editedSchedule[row.original.group]?.[row.index]?.[cell.column.id] || cell.value}
-        onChange={(event) => handleCellChange(event, row.original.group, row.index, cell.column.id)}
+        value={editedSchedule[row.original.title]?.[row.index]?.[cell.column.id] || cell.value}
+        onChange={(event) => handleCellChange(event, row.original.title, row.index, cell.column.id)}
       />
     );
   }

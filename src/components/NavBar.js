@@ -9,7 +9,6 @@ function NavBar (){
                 <CustomLink to="/all">Посмотреть события</CustomLink>
                 <CustomLink to="/schedule">Расписание</CustomLink>
                 <CustomLink to="/students">Студенты</CustomLink>
-                <CustomLink to="/auth">Выход</CustomLink>
             </header>
             </>
         )

@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import Table from "./Table";
+import axios from 'axios';
 
 function ScheduleForm() {
-  const [selectedGroup, setSelectedGroup] = useState("");
   
-  const [groups, setGroups] = useState(
-    ["ПрИ-101", "ПрИ-102"]
-    );
-    
+  const [selectedGroup, setSelectedGroup] = useState("");
+  const [groups, setGroups] = useState([]);
   const [newGroupInput, setNewGroupInput] = useState("");
   const [editedSchedule, setEditedSchedule] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -19,12 +17,11 @@ function ScheduleForm() {
   const [scheduleWarning, setScheduleWarning] = useState("")
   const [groupWarning, setGroupWarning] = useState("")
   const [active, setActive] = useState(false);
+  const [isScheduleAdded, setIsScheduleAdded] = useState(false);
 
 
 
   const [scheduleData, setScheduleData] = useState({
-    "ПрИ-101": [],
-    "ПрИ-102": []
   });
 
   const columns = [
@@ -53,6 +50,37 @@ function ScheduleForm() {
       accessor: 'saturday'
     }
   ];
+  
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get("http://45.9.42.26:22000/api/group");
+        setGroups(response.data);
+        console.log("Группы получены")
+      } catch (error) {
+        console.error("Ошибка при получении групп:", error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
+
+  const addGroup = async () => {
+    if (newGroupInput && !groups.some(group => group.title === newGroupInput)) {
+      try {
+        const response = await axios.post('http://45.9.42.26:22000/api/group', { title: newGroupInput });
+        const newGroup = { id: response.data.id, title: response.data.title };
+        setGroups([...groups, newGroup]);
+        setNewlyAddedGroup(newGroupInput);
+        setIsNewGroupAdded(true);
+        setNewGroupInput("");
+        console.log("Группа добавлена");
+        console.log(response.data.id, response.data.title)
+      } catch (error) {
+        console.error('Ошибка при добавлении группы:', error);
+      }
+    }
+  };
 
   const handleGroupChange = (event) => {
     const group = event.target.value;
@@ -66,7 +94,6 @@ function ScheduleForm() {
     setIsEditing(false);
   };
   
-
   const handleAddPairClick = () => {
     const newScheduleData = { ...scheduleData };
   
@@ -88,14 +115,15 @@ function ScheduleForm() {
     }
   };
 
-  const handleAddButtonClick = () => {
+  /* const handleAddButtonClick = () => {
     if (newGroupInput && !groups.includes(newGroupInput)) {
+      addGroup(newGroupInput);
       setGroups([...groups, newGroupInput]);
       setNewGroupInput("");
       setNewlyAddedGroup(newGroupInput); 
       setIsNewGroupAdded(true);
     }
-  };
+  }; */
 
   const handleEditClick = () => {
     if (selectedGroup) {
@@ -124,6 +152,7 @@ function ScheduleForm() {
       setIsNewGroupAdded(false);
       setIsTableVisible(true);
       setScheduleWarning("");
+      setIsScheduleAdded(true);
     } else {
       setScheduleWarning("Дата не выбрана");
     }
@@ -142,11 +171,13 @@ function ScheduleForm() {
     <div className="schedule-form">
       <div className="params">
         <form name="myForm">
-          <select onChange={handleGroupChange} value={selectedGroup}>
-            <option value="">Выберите группу</option>
+        <select onChange={handleGroupChange} value={selectedGroup}>
+            <option key="id" value="">
+              Выберите группу
+            </option>
             {groups.map((group) => (
-              <option key={group} value={group}>
-                {group}
+              <option key={group.id} value={group.id}>
+                {group.title}
               </option>
             ))}
           </select>
@@ -172,7 +203,7 @@ function ScheduleForm() {
             type="button"
             name="addButton"
             value="Добавить группу"
-            onClick={handleAddButtonClick}
+            onClick={addGroup}
           />
         </p>
 
@@ -213,12 +244,33 @@ function ScheduleForm() {
             </div>
           ) : (
             <>
+              {data.length === 0 && (
+                <div className="add-schedule">
+                  <button className="editSch" onClick={handleAddScheduleClick}>
+                    Добавить расписание
+                  </button>
+                  <div className="chooseDate">
+                    <h3 className="semestr">Выберите дату начала семестра:</h3>
+                    <label className="date">
+                      <input
+                        className={selectedDate ? "" : "error"}
+                        type="date"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                      />
+                    </label>
+                    <p className="warning">{scheduleWarning}</p>
+                  </div>
+                </div>
+              )}
+
               <Table 
                 columns={columns} 
                 data={data} 
                 isEditing={isEditing} 
-                editedSchedule={editedSchedule} 
-                setEditedSchedule={setEditedSchedule} />
+                editedSchedule={editedSchedule[selectedGroup]}
+                setEditedSchedule={setEditedSchedule} 
+              />
               {isEditing && (
                 <div className="add-pair">
                   <button className="editSch" onClick={handleAddPairClick}>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import UseScript from '../components/UseScript'
 
-function Auth() {
+function Auth() {/* 
 
   UseScript('https://telegram.org/js/telegram-widget.js?22')
 
@@ -22,7 +22,7 @@ function Auth() {
     ) => {  
     
     onTelegramAuth()
-    };
+    }; */
 }
 
 export default Auth
