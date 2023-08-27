@@ -10,37 +10,35 @@ function ScheduleForm() {
   const [editedSchedule, setEditedSchedule] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState({});
-  const [selectedDate, setSelectedDate] = useState("");
+ /*  const [selectedDate, setSelectedDate] = useState(""); */
   const [isNewGroupAdded, setIsNewGroupAdded] = useState(false);
-  const [newlyAddedGroup, setNewlyAddedGroup] = useState("");
+  const [newlyAddedGroup, setNewlyAddedGroup] = useState("");/* 
   const [isTableVisible, setIsTableVisible] = useState(false);
-  const [scheduleWarning, setScheduleWarning] = useState("")
+  const [scheduleWarning, setScheduleWarning] = useState("") */
   const [groupWarning, setGroupWarning] = useState("")
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(false);/* 
   const [isScheduleAdded, setIsScheduleAdded] = useState(false);
-  const [editingGroups, setEditingGroups] = useState({});
+  const [editingGroups, setEditingGroups] = useState({}); */
   const [groupStates, setGroupStates] = useState({});
+  const [newSchedule, setNewSchedule] = useState({});
 
-useEffect(() => {
-  const initialGroupStates = {};
-  groups.forEach(group => {
-    initialGroupStates[group.id] = {
-      showTable: false,
-      selectedDate: "",
-      scheduleWarning: "",
-      isEditing: false,
-      editedSchedule: {},
-      selectedWeek: {},
-      scheduleData: {},
-    };
-  });
-  setGroupStates(initialGroupStates);
-}, [groups]);
+    useEffect(() => {
+      const initialGroupStates = {};
+      groups.forEach(group => {
+        initialGroupStates[group.id] = {
+          showTable: false,
+          selectedDate: "",
+          scheduleWarning: "",
+          isEditing: false,
+          editedSchedule: {},
+          selectedWeek: {},
+          scheduleData: {},
+        };
+      });
+      setGroupStates(initialGroupStates);
+    }, [groups]);
 
-
-
-  const [scheduleData, setScheduleData] = useState({
-  });
+  const [scheduleData, setScheduleData] = useState({});
 
   const columns = [
     {
@@ -88,7 +86,7 @@ useEffect(() => {
       try {
         const response = await axios.post('http://45.9.42.26:22000/api/group', { title: newGroupInput });
         const newGroup = { id: response.data.id, title: response.data.title };
-        setGroups([...groups, newGroup]);
+        setGroups(prevGroups => [...prevGroups, newGroup]);
         setNewlyAddedGroup(newGroupInput);
         setIsNewGroupAdded(true);
         setNewGroupInput("");
@@ -165,21 +163,38 @@ useEffect(() => {
     setActive(!active);
   };
 
-  const handleAddScheduleClick = (groupId) => {
-    if (groupStates[groupId].selectedDate) {
-      const newGroupStates = { ...groupStates };
-      newGroupStates[groupId].showTable = true;
-      newGroupStates[groupId].scheduleWarning = "";
-      setGroupStates(newGroupStates);
-    } else {
+  const handleAddScheduleClick = async (groupId) => {
+    const selectedDate = groupStates[groupId].selectedDate;
+  
+    if (!selectedDate) {
       const newGroupStates = { ...groupStates };
       newGroupStates[groupId].scheduleWarning = "Дата не выбрана";
       setGroupStates(newGroupStates);
+      return;
+    }
+  
+    const newSchedule= {
+      groupName: selectedGroup,
+      firstWeek: {
+        title: "",
+        days: [],
+      },
+      secondWeek: {
+        title: "",
+        days: [],
+      },
+    };
+  
+    try {
+      const response = await axios.post('http://45.9.42.26:22002/api/schedule', newSchedule);
+      console.log("Расписание добавлено:", response.data);
+    } catch (error) {
+      console.error("Ошибка при добавлении расписания:", error);
     }
   };
+  
 
   const handleDateChange = (event, groupId) => {
-    console.log("Selected date:", event.target.value);
     const newGroupStates = { ...groupStates };
     newGroupStates[groupId].selectedDate = event.target.value;
     setGroupStates(newGroupStates);
