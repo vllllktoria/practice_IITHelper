@@ -224,7 +224,7 @@ function ScheduleForm() {
 
       {selectedGroup && (
         <div className="table">
-          {isNewGroupAdded && selectedGroup === newlyAddedGroup ? (
+          {isNewGroupAdded && selectedGroup === newlyAddedGroup && data.length === 0 ? (
             <div className="add-schedule">
               <button className="editSch" onClick={handleAddScheduleClick}>
                 Добавить расписание
@@ -244,26 +244,6 @@ function ScheduleForm() {
             </div>
           ) : (
             <>
-              {data.length === 0 && (
-                <div className="add-schedule">
-                  <button className="editSch" onClick={handleAddScheduleClick}>
-                    Добавить расписание
-                  </button>
-                  <div className="chooseDate">
-                    <h3 className="semestr">Выберите дату начала семестра:</h3>
-                    <label className="date">
-                      <input
-                        className={selectedDate ? "" : "error"}
-                        type="date"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                      />
-                    </label>
-                    <p className="warning">{scheduleWarning}</p>
-                  </div>
-                </div>
-              )}
-
               <Table 
                 columns={columns} 
                 data={data} 
