@@ -10,17 +10,12 @@ function ScheduleForm() {
   const [editedSchedule, setEditedSchedule] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState({});
- /*  const [selectedDate, setSelectedDate] = useState(""); */
+  const [selectedDate, setSelectedDate] = useState("");
   const [isNewGroupAdded, setIsNewGroupAdded] = useState(false);
-  const [newlyAddedGroup, setNewlyAddedGroup] = useState("");/* 
-  const [isTableVisible, setIsTableVisible] = useState(false);
-  const [scheduleWarning, setScheduleWarning] = useState("") */
+  const [newlyAddedGroup, setNewlyAddedGroup] = useState("");
   const [groupWarning, setGroupWarning] = useState("")
-  const [active, setActive] = useState(false);/* 
-  const [isScheduleAdded, setIsScheduleAdded] = useState(false);
-  const [editingGroups, setEditingGroups] = useState({}); */
+  const [active, setActive] = useState(false);
   const [groupStates, setGroupStates] = useState({});
-  const [newSchedule, setNewSchedule] = useState({});
 
     useEffect(() => {
       const initialGroupStates = {};
@@ -131,16 +126,6 @@ function ScheduleForm() {
     }
   };
 
-  /* const handleAddButtonClick = () => {
-    if (newGroupInput && !groups.includes(newGroupInput)) {
-      addGroup(newGroupInput);
-      setGroups([...groups, newGroupInput]);
-      setNewGroupInput("");
-      setNewlyAddedGroup(newGroupInput); 
-      setIsNewGroupAdded(true);
-    }
-  }; */
-
   const handleEditClick = () => {
     if (selectedGroup) {
       setIsEditing(true)}
@@ -163,36 +148,24 @@ function ScheduleForm() {
     setActive(!active);
   };
 
-  const handleAddScheduleClick = async (groupId) => {
-    const selectedDate = groupStates[groupId].selectedDate;
-  
-    if (!selectedDate) {
-      const newGroupStates = { ...groupStates };
-      newGroupStates[groupId].scheduleWarning = "Дата не выбрана";
-      setGroupStates(newGroupStates);
-      return;
-    }
-  
-    const newSchedule= {
-      groupName: selectedGroup,
-      firstWeek: {
-        title: "",
-        days: [],
-      },
-      secondWeek: {
-        title: "",
-        days: [],
-      },
-    };
-  
+  const addSchedule = async (groupName) => {
     try {
-      const response = await axios.post('http://45.9.42.26:22002/api/schedule', newSchedule);
+      const response = await axios.post("http://45.9.42.26:22002/api/schedule", {
+        groupName: groupName
+      });
       console.log("Расписание добавлено:", response.data);
     } catch (error) {
       console.error("Ошибка при добавлении расписания:", error);
     }
   };
-  
+
+  const handleAddScheduleClick = async () => {
+    if (selectedGroup && selectedDate && selectedWeek) {
+      addSchedule(selectedGroup);
+    } else {
+      console.error("Необходимо заполнить все поля");
+    }
+  };
 
   const handleDateChange = (event, groupId) => {
     const newGroupStates = { ...groupStates };
@@ -221,10 +194,10 @@ function ScheduleForm() {
           </select>
         </form>
 
-        <select onChange={handleWeekChange} value={selectedWeek}>
-          <option value="Первая неделя">Первая неделя</option>
-          <option value="Вторая неделя">Вторая неделя</option>
-        </select>
+        <select onChange={(event) => setSelectedWeek(event.target.value)} value={selectedWeek}>
+        <option value="Первая неделя">Первая неделя</option>
+        <option value="Вторая неделя">Вторая неделя</option>
+      </select>
 
         <p>
           <input
@@ -255,7 +228,7 @@ function ScheduleForm() {
           </div>
         ) : (
           <button className="editSch" onClick={handleEditClick}>
-            Изменить расписание
+            Редактировать расписание
           </button>
         )}
       </div>
@@ -283,9 +256,28 @@ function ScheduleForm() {
     ) : (
       selectedGroup && (
         <div className="add-schedule">
+          <div className="add-pair">
+            <button className="editSch" onClick={handleAddPairClick}>
+              Добавить пару
+            </button>
+            <button className="editSch" onClick={handleCancelAddPairClick}>
+              Удалить
+            </button>
+          </div>
+
+          <Table
+          columns={columns}
+          data={data}
+          isEditing={true}
+          editedSchedule={editedSchedule}
+          setEditedSchedule={setEditedSchedule}
+        />
+
+        <div className="add-params">
           <button className="editSch" onClick={() => handleAddScheduleClick(selectedGroup)}>
             Добавить расписание
           </button>
+          
           <div className="chooseDate">
             <h3 className="semestr">Выберите дату начала семестра:</h3>
             <label className="date">
@@ -297,6 +289,7 @@ function ScheduleForm() {
               />
             </label>
             <p className="warning">{groupStates[selectedGroup]?.scheduleWarning}</p>
+            </div>
           </div>
         </div>
       )

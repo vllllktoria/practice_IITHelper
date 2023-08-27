@@ -97,7 +97,6 @@ h1{
   .add-schedule{
     display: flex;
     justify-content: center;
-    gap: 50px;
     margin-top: 10px;
     flex-direction: column-reverse;
     align-items: center;
@@ -140,3 +139,10 @@ h1{
 .delete-btn:hover{
   background-color: #b71919;
 } */
+
+.add-params{
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 100px;
+}
