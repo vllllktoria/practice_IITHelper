@@ -16,6 +16,7 @@ function ScheduleForm() {
   const [groupWarning, setGroupWarning] = useState("")
   const [active, setActive] = useState(false);
   const [groupStates, setGroupStates] = useState({});
+  
 
     useEffect(() => {
       const initialGroupStates = {};
@@ -38,27 +39,27 @@ function ScheduleForm() {
   const columns = [
     {
       Header: 'Понедельник',
-      accessor: 'monday'
+      accessor: 'MONDAY'
     },
     {
       Header: 'Вторник',
-      accessor: 'tuesday'
+      accessor: 'TUESDAY'
     },
     {
       Header: 'Среда',
-      accessor: 'wednesday'
+      accessor: 'WEDNESDAY'
     },
     {
       Header: 'Четверг',
-      accessor: 'thursday'
+      accessor: 'THURSDAY'
     },
     {
       Header: 'Пятница',
-      accessor: 'friday'
+      accessor: 'FRIDAY'
     },
     {
       Header: 'Суббота',
-      accessor: 'saturday'
+      accessor: 'SATURDAY'
     }
   ];
   
@@ -148,14 +149,44 @@ function ScheduleForm() {
     setActive(!active);
   };
 
-  const handleAddScheduleClick = async (groupName, date, week) => {
+  const handleAddScheduleClick = async (groupName) => {
+    
+    const lessonsData = data.map(row => ({
+      title: row.title,
+      teacher: row.teacher,
+      auditorium: row.auditorium,
+      timeStart: row.timeStart,
+      timeEnd: row.timeEnd
+    }));
+
+    const firstWeekData = {
+      title: "FIRST_WEEK",
+      days: [
+        {
+          title: columns.accessor,
+          lessons: lessonsData
+        }
+      ]
+    };
+  
+    const secondWeekData = {
+      title: "SECOND_WEEK",
+      days: [
+        {
+          title: columns.accessor,
+          lessons: lessonsData
+        }
+      ]
+    };
+  
+    const requestData = {
+      groupName: groupName,
+      firstWeek: firstWeekData,
+      secondWeek: secondWeekData
+    };
+  
     try {
-      const response = await axios.post("http://45.9.42.26:22002/api/schedule", {
-        groupName: groupName,
-        selectedDate: date,
-        selectedWeek: week
-      });
-      console.log(response.data)
+      const response = await axios.post("http://45.9.42.26:22002/api/schedule", requestData);
       console.log("Расписание добавлено:", response.data);
     } catch (error) {
       console.error("Ошибка при добавлении расписания:", error);
