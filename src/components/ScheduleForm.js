@@ -148,22 +148,17 @@ function ScheduleForm() {
     setActive(!active);
   };
 
-  const addSchedule = async (groupName) => {
+  const handleAddScheduleClick = async (groupName, date, week) => {
     try {
       const response = await axios.post("http://45.9.42.26:22002/api/schedule", {
-        groupName: groupName
+        groupName: groupName,
+        selectedDate: date,
+        selectedWeek: week
       });
+      console.log(response.data)
       console.log("Расписание добавлено:", response.data);
     } catch (error) {
       console.error("Ошибка при добавлении расписания:", error);
-    }
-  };
-
-  const handleAddScheduleClick = async () => {
-    if (selectedGroup && selectedDate && selectedWeek) {
-      addSchedule(selectedGroup);
-    } else {
-      console.error("Необходимо заполнить все поля");
     }
   };
 
@@ -194,7 +189,7 @@ function ScheduleForm() {
           </select>
         </form>
 
-        <select onChange={(event) => setSelectedWeek(event.target.value)} value={selectedWeek}>
+        <select onClick={handleWeekChange} onChange={(event) => setSelectedWeek(event.target.value)} value={selectedWeek}>
         <option value="Первая неделя">Первая неделя</option>
         <option value="Вторая неделя">Вторая неделя</option>
       </select>
