@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTable } from 'react-table';
+import { ScheduleEditForm } from "./ScheduleEditForm";
 
 function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) {
   const {
@@ -12,7 +13,9 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
     columns,
     data
   });
-  
+
+ 
+
   const handleCellChange = (event, rowIndex, columnId) => {
     const { value } = event.target;
     const title = rows[rowIndex].original.title;
@@ -50,43 +53,7 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
                   <td {...cell.getCellProps()} className="custom-cell">
                   <div>
                     {isEditing ? (
-                      <>
-                        <input
-                          placeholder="Предмет"
-                          type="text"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.title]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row.index, cell.column.id)}
-                        />
-                        <input
-                          placeholder="Преподаватель"
-                          type="text"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.title]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row.index, cell.column.id)}
-                        />
-                        <input
-                          placeholder="Аудитория"
-                          type="text"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.title]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row.index, cell.column.id)}
-                        />
-                        <input
-                          placeholder="Время начала"
-                          type="time"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.title]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row.index, cell.column.id)}
-                        />
-                        <input
-                          placeholder="Время окончания"
-                          type="time"
-                          name={cell.column.id}
-                          value={editedSchedule[row.original.title]?.[row.index]?.[cell.column.id] || cell.value}
-                          onChange={(event) => handleCellChange(event, row.index, cell.column.id)}
-                        />
-                      </>
+                      <ScheduleEditForm cell={cell}/>
                     ) : (
                       cell.render('Cell')
                     )}
