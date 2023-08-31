@@ -9,6 +9,7 @@ import { AddDeletePair } from "./AddDeletePair";
 import { SaveChanges } from "./SaveChanges";
 import { EditSchedule } from "./EditSchedule";
 
+
 function ScheduleForm() {
   
   const [selectedGroup, setSelectedGroup] = useState("");
@@ -85,9 +86,17 @@ function ScheduleForm() {
   }, []);
 
 
-  const handleAddScheduleClick = (group, scheduleData) => {
-    console.log("Группа:", group);
-    console.log("Расписание:", scheduleData);
+  const handleAddScheduleClick = (groupId) => {
+    if (groupStates[groupId].selectedDate) {
+      const newGroupStates = { ...groupStates };
+      newGroupStates[groupId].showTable = true;
+      newGroupStates[groupId].scheduleWarning = "";
+      setGroupStates(newGroupStates);
+    } else {
+      const newGroupStates = { ...groupStates };
+      newGroupStates[groupId].scheduleWarning = "Дата не выбрана";
+      setGroupStates(newGroupStates);
+    }
   };
 
 
@@ -99,25 +108,46 @@ function ScheduleForm() {
   return (
     <div className="schedule-form">
       <div className="params">
-        <GroupChange selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} 
-            groups={groups} setIsEditing={setIsEditing}/> 
+        <GroupChange 
+          selectedGroup={selectedGroup} 
+          setSelectedGroup={setSelectedGroup} 
+          groups={groups} 
+          setIsEditing={setIsEditing}
+        /> 
 
-        <WeekChange selectedWeek={selectedWeek} setSelectedWeek={setSelectedWeek} 
-            setIsEditing={setIsEditing}/>
+        <WeekChange 
+          selectedWeek={selectedWeek} 
+          setSelectedWeek={setSelectedWeek} 
+          setIsEditing={setIsEditing}
+        />
         
-        <AddGroup newGroupInput={newGroupInput} setGroups={setGroups} 
-            setNewlyAddedGroup={setNewlyAddedGroup} setIsNewGroupAdded={setIsNewGroupAdded} 
-            setNewGroupInput={setNewGroupInput}/>
+        <AddGroup 
+          newGroupInput={newGroupInput} 
+          setGroups={setGroups} 
+          setNewlyAddedGroup={setNewlyAddedGroup} 
+          setIsNewGroupAdded={setIsNewGroupAdded} 
+          setNewGroupInput={setNewGroupInput}
+        />
 
         {isEditing ? (
           <div>
-            <SaveChanges scheduleData={scheduleData} setScheduleData={setScheduleData} selectedGroup={selectedGroup}
-                  editedSchedule={editedSchedule} setEditedSchedule={setEditedSchedule} setIsEditing={setIsEditing} 
-                  setActive={setActive} active={active}/>
+            <SaveChanges 
+              scheduleData={scheduleData} 
+              setScheduleData={setScheduleData} 
+              selectedGroup={selectedGroup}
+              editedSchedule={editedSchedule} 
+              setEditedSchedule={setEditedSchedule} 
+              setIsEditing={setIsEditing} 
+              setActive={setActive} active={active}
+            />
           </div>
         ) : (
-            <EditSchedule selectedGroup={selectedGroup} setIsEditing={setIsEditing}
-                  setGroupWarning={setGroupWarning} setActive={setActive}/>
+            <EditSchedule 
+              selectedGroup={selectedGroup} 
+              setIsEditing={setIsEditing}
+              setGroupWarning={setGroupWarning} 
+              setActive={setActive}
+            />
         )}
       </div>
 
@@ -133,15 +163,23 @@ function ScheduleForm() {
           onSave={handleAddScheduleClick}
         />
         {isEditing && (
-          <AddDeletePair scheduleData={scheduleData} setScheduleData={setScheduleData}
-                          selectedGroup={selectedGroup} selectedWeek={selectedWeek}/>
+          <AddDeletePair 
+            scheduleData={scheduleData} 
+            setScheduleData={setScheduleData}
+            selectedGroup={selectedGroup} 
+            selectedWeek={selectedWeek}
+          />
         )}
       </>
     ) : (
       selectedGroup && (
         <div className="add-schedule">
-          <AddDeletePair scheduleData={scheduleData} setScheduleData={setScheduleData}
-            selectedGroup={selectedGroup} selectedWeek={selectedWeek}/>
+          <AddDeletePair 
+           scheduleData={scheduleData} 
+           setScheduleData={setScheduleData}
+           selectedGroup={selectedGroup} 
+           selectedWeek={selectedWeek}
+          />
 
           <Table
           columns={columns}
@@ -154,13 +192,18 @@ function ScheduleForm() {
         />
 
         <div className="add-params">
-          <button className="editSch" onClick={() => handleAddScheduleClick(selectedGroup, scheduleData)}>
+          <button className="editSch" onClick={() => handleAddScheduleClick(selectedGroup)}>
             Добавить расписание
           </button>
 
-            <DateChange groupStates={groupStates} setGroupStates={setGroupStates}
-              selectedDate={selectedDate} selectedGroup={selectedGroup}
-              scheduleWarning={scheduleWarning}/>
+            <DateChange 
+              groupStates={groupStates} 
+              setGroupStates={setGroupStates}
+              selectedDate={selectedDate} 
+              selectedGroup={selectedGroup}
+              scheduleWarning={scheduleWarning} 
+              setSelectedDate={setSelectedDate}
+            />
           </div>
         </div>
       )

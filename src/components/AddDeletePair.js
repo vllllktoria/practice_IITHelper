@@ -16,12 +16,12 @@ export function AddDeletePair({scheduleData, selectedGroup, selectedWeek, setSch
       
       const handleCancelAddPairClick = () => {
         const newScheduleData = { ...scheduleData };
-      
-        if (newScheduleData[selectedGroup][selectedWeek]) {
+    
+        if (newScheduleData[selectedGroup]?.[selectedWeek]?.length > 0) {
           newScheduleData[selectedGroup][selectedWeek].pop();
           setScheduleData(newScheduleData);
         }
-      };
+    };
 
     return(
         <div className="add-pair">
