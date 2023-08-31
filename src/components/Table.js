@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTable } from 'react-table';
 import { ScheduleEditForm } from "./ScheduleEditForm";
 
-function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) {
+function Table({ columns, data, isEditing, onSave, selectedGroup }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -13,21 +13,6 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
     columns,
     data
   });
-
- 
-
-  const handleCellChange = (event, rowIndex, columnId) => {
-    const { value } = event.target;
-    const title = rows[rowIndex].original.title;
-    const updatedEditedSchedule = { ...editedSchedule };
-    if (!updatedEditedSchedule[title]) {
-      updatedEditedSchedule[title] = [...data];
-    }
-    const rowValues = { ...updatedEditedSchedule[title][rowIndex] };
-    rowValues[columnId] = value;
-    updatedEditedSchedule[title][rowIndex] = rowValues;
-    setEditedSchedule(updatedEditedSchedule);
-  };
 
   return (
     <table {...getTableProps()} className="table">
@@ -53,7 +38,7 @@ function Table({ columns, data, isEditing, editedSchedule, setEditedSchedule }) 
                   <td {...cell.getCellProps()} className="custom-cell">
                   <div>
                     {isEditing ? (
-                      <ScheduleEditForm cell={cell}/>
+                       <ScheduleEditForm cell={cell} onSave={(newData) => onSave(selectedGroup, newData)}  />
                     ) : (
                       cell.render('Cell')
                     )}

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-export function ScheduleEditForm({cell}) {
+export function ScheduleEditForm({cell, onSave}) {
 
     const [subject, setSubject] = useState('');
     const [teacher, setTeacher] = useState('');
@@ -8,8 +8,18 @@ export function ScheduleEditForm({cell}) {
     const [timeStart, setTimeStart] = useState('');
     const [timeEnd, setTimeEnd] = useState('');
 
-    const handleSubmit = function() {
-        
+    const handleSubmit = function(e) {
+        e.preventDefault();
+
+        const newData = {
+            subject,
+            teacher,
+            auditorium,
+            timeStart,
+            timeEnd
+        };
+
+        onSave(newData);
     }
 
     return (
@@ -49,6 +59,7 @@ export function ScheduleEditForm({cell}) {
                 value={timeEnd}
                 onChange={(e) => {setTimeEnd(e.target.value)}}
             />
+            <button type="submit">Сохранить</button>
             </form>
     );
 }
