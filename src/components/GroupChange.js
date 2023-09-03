@@ -6,6 +6,7 @@ export function GroupChange({selectedGroup, setSelectedGroup, setIsEditing, grou
         const group = event.target.value;
         setSelectedGroup(group);
         setIsEditing(false);
+        console.log(event.target.value)
       };
 
       return(
@@ -15,7 +16,7 @@ export function GroupChange({selectedGroup, setSelectedGroup, setIsEditing, grou
               Выберите группу
             </option>
             {groups.map((group) => (
-              <option key={group.id} value={group.id}>
+              <option key={group.id} value={group.title}>
                 {group.title}
               </option>
             ))}

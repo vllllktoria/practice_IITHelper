@@ -29,7 +29,7 @@ function ScheduleForm() {
     useEffect(() => {
       const initialGroupStates = {};
       groups.forEach(group => {
-        initialGroupStates[group.id] = {
+        initialGroupStates[group.title] = {
           showTable: false,
           selectedDate: "",
           scheduleWarning: "",
@@ -87,17 +87,21 @@ function ScheduleForm() {
 
 
   const handleAddScheduleClick = (groupId) => {
+    
     if (groupStates[groupId].selectedDate) {
       const newGroupStates = { ...groupStates };
       newGroupStates[groupId].showTable = true;
       newGroupStates[groupId].scheduleWarning = "";
       setGroupStates(newGroupStates);
+      console.log(groupStates)
     } else {
       const newGroupStates = { ...groupStates };
       newGroupStates[groupId].scheduleWarning = "Дата не выбрана";
       setGroupStates(newGroupStates);
+      console.log(groupStates)
     }
-  };
+  
+};
 
 
   const data =
@@ -138,7 +142,8 @@ function ScheduleForm() {
               editedSchedule={editedSchedule} 
               setEditedSchedule={setEditedSchedule} 
               setIsEditing={setIsEditing} 
-              setActive={setActive} active={active}
+              setActive={setActive} 
+              active={active}
             />
           </div>
         ) : (
