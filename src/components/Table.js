@@ -38,7 +38,9 @@ function Table({ columns, data, isEditing, onSave, selectedGroup }) {
                   <td {...cell.getCellProps()} className="custom-cell">
                   <div>
                     {isEditing ? (
-                       <ScheduleEditForm cell={cell} onSave={(newData) => onSave(selectedGroup, newData)}  />
+                       <ScheduleEditForm 
+                        cell={cell} 
+                        onSave={(newData) => onSave(selectedGroup, newData)}  />
                     ) : (
                       cell.render('Cell')
                     )}

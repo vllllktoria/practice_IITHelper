@@ -24,19 +24,19 @@ function ScheduleForm() {
   const [active, setActive] = useState(false);
   const [groupStates, setGroupStates] = useState({});
   const [scheduleWarning, setScheduleWarning] = useState("")
-  const [selectedWeek, setSelectedWeek] = useState({});
+  const [selectedWeek, setSelectedWeek] = useState("Первая неделя");
   
     useEffect(() => {
       const initialGroupStates = {};
       groups.forEach(group => {
         initialGroupStates[group.title] = {
           showTable: false,
-          selectedDate: "",
-          scheduleWarning: "",
+          selectedDate: selectedDate,
+          scheduleWarning: scheduleWarning,
           isEditing: false,
-          editedSchedule: {},
-          selectedWeek: {},
-          scheduleData: {},
+          editedSchedule: [],
+          selectedWeek: selectedWeek,
+          scheduleData: [],
         };
       });
       setGroupStates(initialGroupStates);
@@ -103,6 +103,22 @@ function ScheduleForm() {
   
 };
 
+const handleSaveData = (groupId, newData) => {
+  const updatedScheduleData = { ...scheduleData };
+  const updatedEditedSchedule = { ...editedSchedule };
+
+  if (!updatedScheduleData[groupId]) {
+    updatedScheduleData[groupId] = {};
+  }
+
+  updatedScheduleData[groupId][selectedWeek] = newData;
+  updatedEditedSchedule[groupId] = newData;
+
+  setScheduleData(updatedScheduleData);
+  setEditedSchedule(updatedEditedSchedule); 
+
+  console.log(selectedWeek);
+};
 
   const data =
   selectedGroup && selectedWeek
@@ -165,7 +181,7 @@ function ScheduleForm() {
           isEditing={isEditing}
           editedSchedule={editedSchedule}
           setEditedSchedule={setEditedSchedule}
-          onSave={handleAddScheduleClick}
+          onSave={handleSaveData}
         />
         {isEditing && (
           <AddDeletePair 
@@ -193,7 +209,7 @@ function ScheduleForm() {
           isEditing={true}
           editedSchedule={editedSchedule}
           setEditedSchedule={setEditedSchedule}
-          onSave={(group, newData) => handleAddScheduleClick(group, newData)}
+          onSave={(group, newData) => handleSaveData(group, newData)}
         />
 
         <div className="add-params">

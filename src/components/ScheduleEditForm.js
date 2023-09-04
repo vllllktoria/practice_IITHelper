@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export function ScheduleEditForm({ cell, onSave }) {
+export function ScheduleEditForm({ onSave }) {
   const [subject, setSubject] = useState("");
   const [teacher, setTeacher] = useState("");
   const [auditorium, setAuditorium] = useState("");
@@ -46,40 +46,34 @@ export function ScheduleEditForm({ cell, onSave }) {
         <input
           placeholder="Предмет"
           type="text"
-          name={cell.column.id}
           value={subject}
           onChange={handleSubjectChange}
         />
         <input
           placeholder="Преподаватель"
           type="text"
-          name={cell.column.id}
           value={teacher}
           onChange={handleTeacherChange}
         />
         <input
           placeholder="Аудитория"
           type="text"
-          name={cell.column.id}
           value={auditorium}
           onChange={handleAuditoriumChange}
         />
         <input
           placeholder="Время начала"
           type="time"
-          name={cell.column.id}
           value={timeStart}
           onChange={handleTimeStartChange}
         />
         <input
           placeholder="Время окончания"
           type="time"
-          name={cell.column.id}
           value={timeEnd}
           onChange={handleTimeEndChange}
         />
       </form>
-      <button onClick={handleSubmit}>Сохранить</button>
     </div>
   );
 }
