@@ -16,6 +16,8 @@ function SendForm() {
   const [groups, setGroups] = useState([]);
   const [sentEvent, setSentEvent] = useState(null);
   const [hasFeedback, setHasFeedback] = useState(false);
+  const [searchStudentInput, setSearchStudentInput] = useState(""); 
+  const [searchGroupInput, setSearchGroupInput] = useState("");
 
   useEffect(() => {
     const apiUrl = "http://45.9.42.26:22000/api/student";
@@ -23,7 +25,10 @@ function SendForm() {
       crossOrigin: true,
     }).then((resp) => {
       const student = resp.data;
-      setStudents(student);
+      const sortedStudents = student.sort((a, b) => {
+        return a.surname.localeCompare(b.surname);
+      });
+      setStudents(sortedStudents);
     });
   }, []);
 
@@ -33,22 +38,19 @@ function SendForm() {
       crossOrigin: true,
     }).then((resp) => {
       const group = resp.data;
-      setGroups(group);
+      const sortedGroups = group.sort((a, b) => {
+        const groupA = a.title.toLowerCase();
+        const groupB = b.title.toLowerCase();
+
+        const numA = parseInt(groupA.match(/\d+/)?.[0] || "0");
+        const numB = parseInt(groupB.match(/\d+/)?.[0] || "0");
+
+        return numA - numB;
+      });
+
+      setGroups(sortedGroups);
     });
   }, []);
-
-  /* const resetForm = () => {
-    setShowList(false);
-    setShowStudentList(false);
-    setTextInput("");
-    setSelectedDate("");
-    setSelectedTime("");
-    setSelectedRepeat(false);
-    setSendNow(true);
-    setLaterSelected(false);
-    setTitle("");
-    setHasFeedback(false);
-  }; */
 
   const handleCheckboxChange = () => {
     setShowList(!showList);
@@ -88,28 +90,33 @@ function SendForm() {
     setHasFeedback(event.target.checked);
   };
 
+  const handleSearchStudentInputChange = (event) => {
+    setSearchStudentInput(event.target.value);
+  };
+
+  const handleSearchGroupInputChange = (event) => {
+    setSearchGroupInput(event.target.value);
+  };
+
   const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getFullYear());
-  
+
     return `${day}-${month}-${year}`;
   };
-  
+
   const formatTime = (date) => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const seconds = String(date.getSeconds()).padStart(2, "0");
-  
+
     return `${hours}:${minutes}:${seconds}`;
   };
 
   const handleSubmit = () => {
     const eventDate = sendNow ? new Date() : new Date(selectedDate + " " + selectedTime);
 
-    /* const options = { timeZone: "Asia/Yekaterinburg" };
-    const formattedEventDate = eventDate.toLocaleString("en-US", options); */
-  
     const eventData = {
       title: title,
       text: textInput,
@@ -123,21 +130,19 @@ function SendForm() {
       isRepeat: selectedRepeat,
       repeatTime: selectedRepeat ? [formatDate(new Date()) + " " + formatTime(new Date())] : [],
     };
-  
+
     const jsonData = JSON.stringify(eventData);
 
-    console.log(jsonData)
+    console.log(jsonData);
 
     axios
       .post("http://45.9.42.26:22001/api/event", jsonData, {
         headers: {
           "Content-Type": "application/json"
         },
-        withCredentials: true
       })
       .then(response => {
         console.log("Данные добавлены", response.data);
-       /*  resetForm() */
       })
       .catch(error => {
         console.error("Произошла ошибка", error);
@@ -186,10 +191,21 @@ function SendForm() {
                 </div>
                 {showList && (
                   <div className="checkbox-list">
-                    {groups.map((group) => (
-                      <label key={group.id}>
-                        <input type="checkbox" />
-                        {group.title}
+                  <input
+                    placeholder="Введите группу"
+                    type="text"
+                    className="searchInput"
+                    value={searchGroupInput}
+                    onChange={handleSearchGroupInputChange}
+                  />
+                    {groups
+                      .filter((group) =>
+                        group.title.toLowerCase().includes(searchGroupInput.toLowerCase())
+                      )
+                      .map((group) => (
+                        <label key={group.id}>
+                          <input type="checkbox" />
+                          {group.title}
                       </label>
                     ))}
                   </div>
@@ -208,12 +224,23 @@ function SendForm() {
                 </div>
                 {showStudentList && (
                   <div className="checkbox-list">
-                    {students.map((student) => (
-                      <label key={student.id}>
-                        <input type="checkbox" />
-                        {student.surname} {student.name} {student.patronymic}
-                      </label>
-                    ))}
+                    <input
+                      placeholder="Введите фамилию"
+                      type="text"
+                      className="searchInput"
+                      value={searchStudentInput}
+                      onChange={handleSearchStudentInputChange}
+                    />
+                    {students
+                      .filter((student) =>
+                        student.surname.toLowerCase().includes(searchStudentInput.toLowerCase())
+                      )
+                      .map((student) => (
+                        <label key={student.id}>
+                          <input type="checkbox" />
+                          {student.surname} {student.name} {student.patronymic}
+                        </label>
+                      ))}
                   </div>
                 )}
               </label>

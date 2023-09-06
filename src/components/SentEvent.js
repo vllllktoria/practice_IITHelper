@@ -13,7 +13,6 @@ function SentEvent() {
       try {
         const apiUrl = "http://45.9.42.26:22001/api/event";
         const response = await axios.get(apiUrl, {
-          withCredentials: true
         });
         const events = response.data;
         setEvents(events);
@@ -32,13 +31,11 @@ function SentEvent() {
     try {
       const gradeUrl = `http://45.9.42.26:22001/api/event/${eventId}/grade`;
       const gradeResponse = await axios.get(gradeUrl, {
-        withCredentials: true
       });
       const gradeData = gradeResponse.data;
 
       const feedbackUrl = `http://45.9.42.26:22001/api/event/${eventId}/feedback`;
       const feedbackResponse = await axios.get(feedbackUrl, {
-        withCredentials: true
       });
       const feedbackData = feedbackResponse.data;
 

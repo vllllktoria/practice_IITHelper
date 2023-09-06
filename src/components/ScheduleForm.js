@@ -86,7 +86,7 @@
     }, []);
 
 
-   /*  useEffect(() => {
+    /* useEffect(() => {
       const fetchScheduleForSelectedGroup = async (groupId) => {
         if (selectedGroup) { 
           try {
@@ -111,7 +111,7 @@
     
 
 
-    const handleAddScheduleClick = (groupId) => {
+    const handleAddScheduleClick = (groupId, newData) => {
       
       if (groupStates[groupId].selectedDate) {
         const newGroupStates = { ...groupStates };
@@ -119,6 +119,7 @@
         newGroupStates[groupId].scheduleWarning = "";
         setGroupStates(newGroupStates);
         console.log(newGroupStates)
+        
       } else {
         const newGroupStates = { ...groupStates };
         newGroupStates[groupId].scheduleWarning = "Дата не выбрана";
