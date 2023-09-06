@@ -18,7 +18,6 @@ function SendForm() {
   const [searchStudentInput, setSearchStudentInput] = useState(""); 
   const [searchGroupInput, setSearchGroupInput] = useState("");
   const [selectedStudents, setSelectedStudents] = useState([]); 
-  
 
   useEffect(() => {
     const apiUrl = "http://45.9.42.26:22000/api/student";

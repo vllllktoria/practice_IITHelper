@@ -1,4 +1,4 @@
-  import React, { useState, useEffect} from "react";
+  import React, { useState, useEffect, useContext} from "react";
   import Table from "./Table";
   import axios from 'axios';
   import { WeekChange } from "./WeekChange";
@@ -8,6 +8,7 @@
   import { AddDeletePair } from "./AddDeletePair";
   import { SaveChanges } from "./SaveChanges";
   import { EditSchedule } from "./EditSchedule";
+  import { ScheduleContext } from "../context/schedule";
 
 
   function ScheduleForm() {
@@ -25,10 +26,15 @@
     const [groupStates, setGroupStates] = useState({});
     const [scheduleWarning, setScheduleWarning] = useState("")
     const [selectedWeek, setSelectedWeek] = useState("Первая неделя");
+
+    const [scheduleTest, setScheduleTest] = useState([])
+
+    const schedule = useContext(ScheduleContext)
     
       useEffect(() => {
         const initialGroupStates = {};
         groups.forEach(group => {
+          console.log(group.id)
           initialGroupStates[group.title] = {
             showTable: false,
             selectedDate: selectedDate,
@@ -36,7 +42,50 @@
             isEditing: false,
             editedSchedule: {...editedSchedule},
             selectedWeek: selectedWeek,
-            scheduleData: [],
+            scheduleData: [
+              {
+                subject:"abc",
+                teacher:"def",
+                auditorium:"jhi",
+                timeStart:"12:00",
+                timeEnd:"12:01"
+              },
+              {
+                subject:"abc",
+                teacher:"def",
+                auditorium:"jhi",
+                timeStart:"12:00",
+                timeEnd:"12:01"
+              },
+              {
+                subject:"abc",
+                teacher:"def",
+                auditorium:"jhi",
+                timeStart:"12:00",
+                timeEnd:"12:01"
+              },
+              {
+                subject:"abc",
+                teacher:"def",
+                auditorium:"jhi",
+                timeStart:"12:00",
+                timeEnd:"12:01"
+              },
+              {
+                subject:"abc",
+                teacher:"def",
+                auditorium:"jhi",
+                timeStart:"12:00",
+                timeEnd:"12:01"
+              },
+              {
+                subject:"abc",
+                teacher:"def",
+                auditorium:"jhi",
+                timeStart:"12:00",
+                timeEnd:"12:01"
+              }
+            ]
           };
         });
         setGroupStates(initialGroupStates);
@@ -111,7 +160,7 @@
     
 
 
-    const handleAddScheduleClick = (groupId, newData) => {
+    const handleAddScheduleClick = (groupId) => {
       
       if (groupStates[groupId].selectedDate) {
         const newGroupStates = { ...groupStates };
@@ -126,24 +175,9 @@
         setGroupStates(newGroupStates);
         console.log(groupStates)
       }
+      console.log(scheduleData)
+      setScheduleData([...scheduleTest, schedule])
     
-  };
-
-  const handleSaveData = (groupId, newData) => {
-    const updatedScheduleData = { ...scheduleData };
-    const updatedEditedSchedule = { ...editedSchedule };
-
-    if (!updatedScheduleData[groupId]) {
-      updatedScheduleData[groupId] = {};
-    }
-
-    updatedScheduleData[groupId][selectedWeek] = newData;
-    updatedEditedSchedule[groupId] = newData;
-
-    setScheduleData(updatedScheduleData);
-    setEditedSchedule(updatedEditedSchedule); 
-
-    console.log(selectedWeek);
   };
 
     const data =
@@ -207,7 +241,6 @@
             isEditing={isEditing}
             editedSchedule={editedSchedule}
             setEditedSchedule={setEditedSchedule}
-            onSave={handleSaveData}
           />
           {isEditing && (
             <AddDeletePair 
@@ -235,7 +268,6 @@
             isEditing={true}
             editedSchedule={editedSchedule}
             setEditedSchedule={setEditedSchedule}
-            onSave={(group, newData) => handleSaveData(group, newData)}
           />
 
           <div className="add-params">

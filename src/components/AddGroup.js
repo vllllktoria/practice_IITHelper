@@ -1,12 +1,13 @@
 import React from "react";
 import axios from "axios";
 
-export function AddGroup({newGroupInput, setGroups, setNewlyAddedGroup, setIsNewGroupAdded, setNewGroupInput, groups}){
+export function AddGroup({newGroupInput, setGroups, setNewlyAddedGroup, setIsNewGroupAdded, setNewGroupInput}){
 
     const addGroup = async () => {
         if (newGroupInput) {
           try {
             const response = await axios.post('http://45.9.42.26:22000/api/group', { title: newGroupInput });
+            console.log(response)
             const newGroup = { id: response.data.id, title: response.data.title };
             setGroups(prevGroups => [...prevGroups, newGroup]);
             setNewlyAddedGroup(newGroupInput);

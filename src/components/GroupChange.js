@@ -15,8 +15,8 @@ export function GroupChange({selectedGroup, setSelectedGroup, setIsEditing, grou
             <option key="id" value="">
               Выберите группу
             </option>
-            {groups.map((group) => (
-              <option key={group.id} value={group.title}>
+            {groups.map((group, key) => (
+              <option key={key} value={group.title}>
                 {group.title}
               </option>
             ))}
