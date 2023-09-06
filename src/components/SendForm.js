@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import SentEvent from "./SentEvent";
 
 function SendForm() {
   const [showList, setShowList] = useState(false);
@@ -18,6 +17,8 @@ function SendForm() {
   const [hasFeedback, setHasFeedback] = useState(false);
   const [searchStudentInput, setSearchStudentInput] = useState(""); 
   const [searchGroupInput, setSearchGroupInput] = useState("");
+  const [selectedStudents, setSelectedStudents] = useState([]); 
+  
 
   useEffect(() => {
     const apiUrl = "http://45.9.42.26:22000/api/student";
@@ -28,7 +29,11 @@ function SendForm() {
       const sortedStudents = student.sort((a, b) => {
         return a.surname.localeCompare(b.surname);
       });
-      setStudents(sortedStudents);
+      const studentsWithSelection = sortedStudents.map((student) => ({
+        ...student,
+        isSelected: false,
+      }));
+      setStudents(studentsWithSelection);
     });
   }, []);
 
@@ -58,6 +63,7 @@ function SendForm() {
 
   const handleStudentCheckboxChange = () => {
     setShowStudentList(!showStudentList);
+    setSelectedStudents([]);
   };
 
   const handleTextChange = (event) => {
@@ -91,11 +97,34 @@ function SendForm() {
   };
 
   const handleSearchStudentInputChange = (event) => {
-    setSearchStudentInput(event.target.value);
+    const input = event.target.value.toLowerCase();
+    setSearchStudentInput(input);
+    const updatedStudents = students.map((student) => ({
+      ...student,
+      isSelected: student.surname.toLowerCase().includes(input) && selectedStudents.includes(student.id),
+    }));
+    setStudents(updatedStudents);
   };
 
   const handleSearchGroupInputChange = (event) => {
     setSearchGroupInput(event.target.value);
+  };
+
+  const resetForm = () => {
+    setShowList(false);
+    setShowStudentList(false);
+    setTextInput("");
+    setSelectedDate("");
+    setSelectedTime("");
+    setSelectedRepeat(false);
+    setSendNow(true);
+    setLaterSelected(false);
+    setTitle("");
+    setSearchStudentInput("");
+    setSearchGroupInput("");
+    setSentEvent(null);
+    setHasFeedback(false);
+    setSelectedStudents([]);
   };
 
   const formatDate = (date) => {
@@ -114,6 +143,20 @@ function SendForm() {
     return `${hours}:${minutes}:${seconds}`;
   };
 
+  const handleStudentSelect = (selectedStudent) => {
+    const updatedSelectedStudents = selectedStudent.isSelected
+      ? selectedStudents.filter((studentId) => studentId !== selectedStudent.id)
+      : [...selectedStudents, selectedStudent.id];
+    setSelectedStudents(updatedSelectedStudents);
+
+    const updatedStudents = students.map((student) => {
+      return student.id === selectedStudent.id
+        ? { ...student, isSelected: !student.isSelected }
+        : student;
+    });
+    setStudents(updatedStudents);
+  };
+
   const handleSubmit = () => {
     const eventDate = sendNow ? new Date() : new Date(selectedDate + " " + selectedTime);
 
@@ -125,7 +168,7 @@ function SendForm() {
       isGroupEvent: showList,
       isStudentEvent: showStudentList,
       groups: showList ? [groups[0].id] : [],
-      students: showStudentList ? students.map((student) => student.id) : [],
+      students: showStudentList ? selectedStudents : [],
       type: sendNow ? "INFO" : "EVENT",
       isRepeat: selectedRepeat,
       repeatTime: selectedRepeat ? [formatDate(new Date()) + " " + formatTime(new Date())] : [],
@@ -152,6 +195,8 @@ function SendForm() {
     } else {
       setSentEvent({ ...eventData, sendNow: false });
     }
+
+    resetForm();
   };
 
   return (
@@ -237,7 +282,11 @@ function SendForm() {
                       )
                       .map((student) => (
                         <label key={student.id}>
-                          <input type="checkbox" />
+                          <input
+                            type="checkbox"
+                            checked={student.isSelected} 
+                            onChange={() => handleStudentSelect(student)} 
+                          />
                           {student.surname} {student.name} {student.patronymic}
                         </label>
                       ))}

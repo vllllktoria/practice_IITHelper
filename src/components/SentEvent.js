@@ -57,7 +57,10 @@ function SentEvent() {
   return (
     <div>
       <h1>Отправленные уведомления:</h1>
-      {events.map((event) => (
+      {events
+      .slice()
+      .reverse() 
+      .map((event) => (
         <div className="sent-event" key={event.id}>
           <div className="sent-event-content">
             <p className="event-title">{event.title}</p>

@@ -5,7 +5,7 @@ function Users({ users, handleEdit }) {
   const [acceptedUsersData, setAcceptedUsersData] = useState([]);
 
   const handleSaveAcceptedUser = (userData) => {
-    setAcceptedUsersData((prevData) => [...prevData, userData]);
+    setAcceptedUsersData((prevData) => [userData, ...prevData]);
   };
 
   if (users.length > 0) {
@@ -23,7 +23,7 @@ function Users({ users, handleEdit }) {
         {acceptedUsersData.length > 0 && (
           <div>
             <h3 id="acceptStudents">Студенты</h3>
-            {acceptedUsersData.map((userData) => (
+            {acceptedUsersData.slice().reverse().map((userData) => (
               <p id="userData" key={userData.id}>
                 {userData.surname} {userData.name} {userData.patronymic} {userData.group}
               </p>
