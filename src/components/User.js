@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import EditForm from "./EditForm.js";
@@ -11,11 +11,10 @@ function User({ user, handleEdit, statementId }) {
   const [group, setGroup] = useState(user.group);
   const [patronymic, setPatronymic] = useState(user.patronymic);
   const [renderUser, updateUser] = useState(user);
-  const [isAccepted, setAccepted] = useState(false);
-  const [isRejected, setRejected] = useState(false);
-  const [acceptedUser, setAcceptedUser] = useState(null);
-  const [rejectedUser, setRejectedUser] = useState(null);
   
+  const isAccepted = localStorage.getItem(`isAccepted_${statementId}`) === 'true';
+  const isRejected = localStorage.getItem(`isRejected_${statementId}`) === 'true';
+
   const checkHandleClick = () => {
     const acceptedUserData = {
       surname: surname,
@@ -35,8 +34,8 @@ function User({ user, handleEdit, statementId }) {
         }
       )
       .then(response => {
-        setAccepted(true);
-        setAcceptedUser(response.data); 
+        localStorage.setItem(`isAccepted_${statementId}`, true);
+        updateUser(response.data); 
       })
       .catch(error => {
         console.error("Ошибка", error);
@@ -59,16 +58,25 @@ function User({ user, handleEdit, statementId }) {
           headers: {
             "Content-Type": "application/json"
           },
-          }
+        }
       )
       .then(response => {
-        setRejected(true);
-        setRejectedUser(response.data); 
+        localStorage.setItem(`isRejected_${statementId}`, true);
+        updateUser(response.data); 
       })
       .catch(error => {
         console.error("Ошибка", error);
       });
   };
+
+  useEffect(() => {
+    const isAccepted = localStorage.getItem(`isAccepted_${statementId}`) === 'true';
+    const isRejected = localStorage.getItem(`isRejected_${statementId}`) === 'true';
+    
+    if (isAccepted || isRejected) {
+      setEdit(false);
+    }
+  }, [statementId]);
 
   return (
     <>

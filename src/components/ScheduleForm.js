@@ -34,7 +34,6 @@
       useEffect(() => {
         const initialGroupStates = {};
         groups.forEach(group => {
-          console.log(group.id)
           initialGroupStates[group.title] = {
             showTable: false,
             selectedDate: selectedDate,
