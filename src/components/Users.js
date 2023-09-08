@@ -9,9 +9,11 @@ function Users({ users, handleEdit }) {
   };
 
   if (users.length > 0) {
+    const sortedUsers = users.slice().sort((a, b) => b.id - a.id);
+
     return (
       <div>
-        {users.map((user) => (
+        {sortedUsers.map((user) => (
           <User
             key={user.id}
             user={user}
